@@ -19,14 +19,6 @@ require([
 
     renderer = new UniqueValueRenderer(defaultSymbol);
 
-    var template = new InfoTemplate("${NAME}",
-        "Type: ${TYPE}<br/>" +
-        "Ramsar: <a id='ramsarLink' target='_blank' href='${HYPERLINK_2}'>click here</a><br/>" +
-        "Location Website: <a target='_blank' href='${HYPERLINK}'>click here</a><br/>" +
-        "Water Summary Report: <a target='_blank' href='${WATER_SUMMARY_REPORT}'>click here</a><br/>" +
-        "Wildlife Action Plan: <a target='_blank' href='${STATE_ACTION_PLAN}'>click here</a><br/>"
-    )
-
     allLayers = [
         {
             'groupHeading': 'ESRI dynamic map services',
@@ -50,41 +42,9 @@ require([
                         'includeLegend' : true,
                     }
                 },
-                'Wetlands Status' : {
-                    'url': 'https://fwsmapper.wim.usgs.gov/ArcGIS/rest/services/Wetlands_Status/MapServer',
-                    'options': {
-                        'id': 'wetlandsStatus',
-                        'layers': [1],
-                        'visible': true,
-                        'maxScale': 285000,
-                        'opacity': 0.6
-                    },
-                    'wimOptions': {
-                        'type': 'layer',
-                        'layerType': 'agisDynamic',
-                        'includeInLayerList': false,
-                        'includeLegend' : true,
-                        'layerDefinitions': {0: "STATUS = 'Digital' OR STATUS = 'No_Data'"}
-                    }
-                },
-                'Wetlands ' : {
-                    'url': 'https://fwsmapper.wim.usgs.gov/arcgis/rest/services/Wetlands_Raster/ImageServer',
-                    'options': {
-                        'id': 'wetlandsRaster',
-                        'visible': true,
-                        'maxScale': 285000,
-                        'opacity': 0.6
-                    },
-                    'wimOptions': {
-                        'type': 'layer',
-                        'layerType': 'agisDynamic',
-                        'includeInLayerList': false,
-                        'includeLegend' : true
-                    }
-                },
                 'Recent' : {
                     'url': 'https://fws.wim.usgs.gov/arcgis/rest/services/WetlandsProjects/Recent_and_Current_Projects/MapServer',
-                    'visible layers': [2],
+                    'visible layers': [1],
                     'options': {
                         'id': 'riparian',
                         'opacity': 0.75,
