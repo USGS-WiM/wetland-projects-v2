@@ -26,7 +26,7 @@ require([
             'includeInLayerList': true,
             'layers': {
                 'Active' : {
-                    'url': 'https://fws.wim.usgs.gov/arcgis/rest/services/WetlandsProjects/Recent_and_Current_Projects/MapServer',
+                    'url': 'https://fwsprimary.wim.usgs.gov/server/rest/services/WetlandsProjects/Recent_and_Current_Projects/MapServer',
                     'visibleLayers': [0],
                     'options': {
                         'id': 'active',
@@ -42,13 +42,13 @@ require([
                         'includeLegend' : true,
                     }
                 },
-                'Recent' : {
-                    'url': 'https://fws.wim.usgs.gov/arcgis/rest/services/WetlandsProjects/Recent_and_Current_Projects/MapServer',
-                    'visible layers': [1],
+                'recent' : {
+                    'url': 'https://fwsprimary.wim.usgs.gov/server/rest/services/WetlandsProjects/Recent_and_Current_Projects/MapServer',
+                    'visibleLayers': [1],
                     'options': {
-                        'id': 'riparian',
+                        'id': 'recent',
                         'opacity': 0.75,
-                        'visible': false
+                        'visible': true
                     },
                     'wimOptions': {
                         'type': 'layer',
@@ -56,11 +56,11 @@ require([
                         'includeInLayerList': true,
                         'zoomScale': 144448,
                         'hasOpacitySlider': true,
-                        'includeLegend' : true
+                        'includeLegend' : true,
                     }
                 },
                 'Image' : {
-                    'url': 'https://fws.wim.usgs.gov/ArcGIS/rest/services/Data_Source/MapServer',
+                    'url': 'https://fwsprimary.wim.usgs.gov/server/rest/services/Data_Source/MapServer',
                     'visibleLayers': [3],
                     'options': {
                         'id': 'riparianStatus',
