@@ -450,3 +450,11 @@ input[type="checkbox"], input[type="radio"] {
     background-repeat: no-repeat;
     background-position: -51px 53%;
 }
+
+.esriLegendServiceLabel {
+    display: none;
+}
+
+.esriLegendLayerLabel {
+    font-weight: bold;
+}
