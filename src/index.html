@@ -1,321 +1,468 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Wetland Mapping Projects - V2</title>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <title>Wetland Mapping Projects - V2</title>
 
-        <!-- build:css styles/vendor.css -->
-        <!-- bower:css -->
-        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="bower_components/bootstrap-map-js/src/css/bootstrapmap.css" />
-        <link rel="stylesheet" href="bower_components/bootstrap-sidebar/dist/css/sidebar.css" />
-        <!-- endbower -->
-        <!-- endbuild -->
-        <!-- CSS for the mapping components -->
-        <link rel="stylesheet" href="https://js.arcgis.com/3.14/dijit/themes/claro/claro.css">
-        <link rel="stylesheet" href="https://js.arcgis.com/3.14/esri/css/esri.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        <!-- build:css styles/main.css -->
-        <link rel="stylesheet" href="styles/main.css">
-        <!-- endbuild -->
-        <!-- build:css styles/base.css -->
-        <!--<link rel="stylesheet" href="bower_components/wim-styles/core/css/wim.css">-->
-        <link rel="stylesheet" href="bower_components/wim-styles/template/css/base.css">
-        <!--endbuild -->
-        <link rel="shortcut icon" href="/favicon.ico">
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap-map-js/src/css/bootstrapmap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-sidebar/dist/css/sidebar.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- CSS for the mapping components -->
+    <link rel="stylesheet" href="https://js.arcgis.com/3.14/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.14/esri/css/esri.css">
+    <link rel="stylesheet" href="https://txpub.usgs.gov/DSS/search_api/2.0/api/search_api.css" />
 
-        <!-- build:js scripts/vendor.js -->
-        <!-- bower:js -->
-        <script src="bower_components/jquery/dist/jquery.js"></script>
-        <script src="bower_components/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="bower_components/bootstrap-sidebar/dist/js/sidebar.js"></script>
-        <script src="bower_components/bootstrap-map-js/dist/js/bootstrapmap.min.js"></script>
-        <!-- endbower -->
-        <!-- endbuild -->
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+    <!-- build:css styles/base.css -->
+    <!--<link rel="stylesheet" href="bower_components/wim-styles/core/css/wim.css">-->
+    <link rel="stylesheet" href="bower_components/wim-styles/template/css/base.css">
+    <!--endbuild -->
+    <link rel="shortcut icon" href="/favicon.ico">
 
-        <script src="https://js.arcgis.com/3.14/"></script>
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/bootstrap-sidebar/dist/js/sidebar.js"></script>
+    <script src="bower_components/bootstrap-map-js/dist/js/bootstrapmap.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <script src="https://js.arcgis.com/3.14/"></script>
+    <script type="text/javascript" src="https://txpub.usgs.gov/DSS/search_api/2.0/api/search_api.min.js"></script>
 
 
-        <!-- build:js scripts/combined.js -->
-        <script src="scripts/utilities.js"></script>
-        <script src="scripts/layers.js"></script>
-        <script src="scripts/core.js"></script>
-        <!-- endbuild -->
+    <!-- build:js scripts/combined.js -->
+    <script src="scripts/utilities.js"></script>
+    <script src="scripts/layers.js"></script>
+    <script src="scripts/core.js"></script>
+    <!-- endbuild -->
 
-    </head>
-    <body class="claro">
+</head>
 
-        <div id="navbar" class="navbar navbar-static navbar-default navbar-fixed-top navbar-dark">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle toggle-left hidden-md hidden-lg" data-toggle="sidebar" data-target=".sidebar-left">
-                        <!--Layers-->
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="https://www.fws.gov">
-                        <img id="fwsLogo" alt="FWS logo" src="images/fwsLogo.png" style="padding: 10px 0 0 0;">
-                        <a class="navbar-brand" target="_blank" href="https://www.fws.gov/wetlands/index.html">
-                            <div id="titles">
-                                <div class='hidden-lg hidden-md hidden-sm' style='font-size:20px;'>NWI - V2</div>
-                                <div class='hidden-xs' style='font-size:20px;'>Wetland Mapping Projects - V2</div>
-                                <div class='hidden-xs' style='font-size:14px;'>surface waters and wetlands</div>
-                            </div>
-                        </a>
-                    </a>
-                </div>
+<body class="claro">
 
-                <button id="geosearchNav" type="button" class="btn btn-primary navbar-btn pull-right">
-                    <span class="glyphicon glyphicon-search"></span>
-                    <span id="geosearchButtonText"> Find Location</span>
+    <div id="navbar" class="navbar navbar-static navbar-default navbar-fixed-top navbar-dark">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle toggle-left hidden-md hidden-lg" data-toggle="sidebar" data-target=".sidebar-left">
+                    <!--Layers-->
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </button>
-
-                <button id="aboutNav" class  ="btn btn-default navbar-btn pull-right">
-                    <i class="fa fa-question-circle"></i><span class="hidden-xs">&nbsp;&nbsp;About</span>
-                </button>
-
-                <!-- legend buttton for navbar. to be removed if we like the in-map legend toggle -->
-                <!--<button id="legendButtonNavBar" type="button" class="btn btn-primary navbar-btn pull-right" style="margin-right: 1em;"><span class="glyphicon glyphicon-list"></span> Legend</button>-->
-                <!-- toggle for a right sidebar (currently not in use) -->
-                <!--<button type="button" class="navbar-toggle toggle-right" data-toggle="sidebar" data-target=".sidebar-right">-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-                <!--</button>-->
-            </div>
-        </div>
-
-
-        <div class="modal fade overflow-y-hidden" id="geosearchModal" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                        <h4 class="modal-title">Find Location</h4>
-                    </div>
-                    <div class="modal-body">
-                        <label style="font-weight: normal">Enter a street address, city or place name<br/>For coordinates, enter decimal degrees in Longitude, Latitude format</label>
-                        <div class="form-group">
-                            <div id="geosearch"><div id="sapi_searchTextBoxDiv"></div></div>
+                <a class="navbar-brand" href="https://www.fws.gov">
+                    <img id="fwsLogo" alt="FWS logo" src="images/fwsLogo.png" style="padding: 10px 0 0 0;">
+                    <a class="navbar-brand" target="_blank" href="https://www.fws.gov/wetlands/index.html">
+                        <div id="titles">
+                            <div class='hidden-lg hidden-md hidden-sm' style='font-size:20px;'>NWI - V2</div>
+                            <div class='hidden-xs' style='font-size:20px;'>Wetland Mapping Projects - V2</div>
+                            <div class='hidden-xs' style='font-size:14px;'>surface waters and wetlands</div>
                         </div>
-                        <form id="geosearch-form" class="form-inline">
-                            <button id="btnGeosearch" type="button" class="btn btn-success btn-fixed" data-dismiss="modal"> Go </button>
-                            <button id="btnDismiss" type="submit" class="btn btn-default btn-fixed" data-dismiss="modal">Dismiss</button>
-                        </form>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
+                    </a>
+                </a>
+            </div>
+
+            <button id="geosearchNav" type="button" class="btn btn-primary navbar-btn pull-right">
+                <span class="glyphicon glyphicon-search"></span>
+                <span id="geosearchButtonText"> Find Location</span>
+            </button>
+
+            <button id="aboutNav" class="btn btn-default navbar-btn pull-right">
+                <i class="fa fa-question-circle"></i>
+                <span class="hidden-xs">&nbsp;&nbsp;About</span>
+            </button>
+
+            <!-- legend buttton for navbar. to be removed if we like the in-map legend toggle -->
+            <!--<button id="legendButtonNavBar" type="button" class="btn btn-primary navbar-btn pull-right" style="margin-right: 1em;"><span class="glyphicon glyphicon-list"></span> Legend</button>-->
+            <!-- toggle for a right sidebar (currently not in use) -->
+            <!--<button type="button" class="navbar-toggle toggle-right" data-toggle="sidebar" data-target=".sidebar-right">-->
+            <!--<span class="icon-bar"></span>-->
+            <!--<span class="icon-bar"></span>-->
+            <!--<span class="icon-bar"></span>-->
+            <!--</button>-->
         </div>
+    </div>
 
-        <div class="modal fade overflow-y-hidden" id="printModal" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                        <h4 class="modal-title"><span class="glyphicon glyphicon-print"></span> Print Map</h4>
+
+    <div class="modal fade overflow-y-hidden" id="geosearchModal" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title">Geosearch</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div id="geosearch"></div>
                     </div>
-                    <div id="printModalBody" class="modal-body">
+                    <form id="geosearch-form" class="form-inline">
+                        <div class="search-help">
+                            <b>Supported Search Strings:</b>
+                            <code>GNIS locations</code>
+                            <code>USGS Sites</code>
+                            <code>Zip Codes</code>
+                            <code>Area Codes</code>
+                            <code>States</code>
+                            <code>Lat/Long (ie. '43.9,-72.1')</code>
+                            <code>Street Address</code>
+                            <br/>
+                            <br/> Search provided by
+                            <a href="https://txpub.usgs.gov/dss/search_api/2.0/" target="_blank">USGS Search JavaScript API</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 
-                        <form id="print-title-form" class="form-group">
-                            <label for="printTitle">Title </label>
-                            <input class="form-control" id="printTitle" placeholder="Enter a title for your printout">
+    <div class="modal fade overflow-y-hidden" id="printModal" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title">
+                        <span class="glyphicon glyphicon-print"></span> Print Map</h4>
+                </div>
+                <div id="printModalBody" class="modal-body">
+
+                    <form id="print-title-form" class="form-group">
+                        <label for="printTitle">Title </label>
+                        <input class="form-control" id="printTitle" placeholder="Enter a title for your printout">
                         <!--</form>
 
                         <form id="print-form" class="form-inline">-->
-                            <button id="printExecuteButton" type="submit" class="btn btn-success btn-fixed" data-loading-text="Printing..." > Print </button>
-                            <button id="printDismissButton" type="button" class="btn btn-default btn-fixed" data-dismiss="modal"> Dismiss</button>
-                        </form>
+                        <button id="printExecuteButton" type="submit" class="btn btn-success btn-fixed" data-loading-text="Printing..."> Print </button>
+                        <button id="printDismissButton" type="button" class="btn btn-default btn-fixed" data-dismiss="modal"> Dismiss</button>
+                    </form>
 
-                        <div id="printJobsDiv" style="margin-top: 5px;"><label>Print Jobs </label><p class="toRemove"> No print jobs yet</p></div>
+                    <div id="printJobsDiv" style="margin-top: 5px;">
+                        <label>Print Jobs </label>
+                        <p class="toRemove"> No print jobs yet</p>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div>
-
-        <div class="wim-alert-fixed" id="huc-download-alert"
-             style="position: fixed; top: 50px; right: 325px; color: #000; background-color: #f9f9f9; border-color: rgba(0,0,0.75);">
-            <i class="ion-close-round close-alert" style="float: right;"></i> <!-- Close Button - MUST INCLUDE -->
-            <div id="innerAlert">
-                <h4><b>Download Data</b></h4>
-                <p>Please review the Data Download (<a target="_blank" href="https://www.fws.gov/wetlands/Data/Data-Download.html">www.fws.gov/wetlands/Data/Data-Download.html</a>) page for information on how to download data, what is included in the download and data use limitations and disclaimer.</p>
-                <br/><p><b>Click the map to select a watershed from which to extract wetland data.</b></p>
+                </div>
             </div>
+            <!-- /.modal-content -->
         </div>
-        <script> <!-- To close alert -->
-        $(".close-alert").click(function(){
-            $(this).parent().slideUp(250);
-            map.getLayer("huc8").setVisibility(false);
-            map.graphics.clear();
-        });
-        </script>
-        <style>
-            .close-alert:hover{
-                cursor: pointer;
-            }
-        </style>
+        <!-- /.modal-dialog -->
+    </div>
 
-        <div id="aboutModal" class="modal fade"  tabindex="-1" role="dialog" >
-            <div class="modal-dialog  modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button class="close" type="button" data-dismiss="modal" aria-hidden="true" style="color:gray;">&times;</button>
-                        <h4 class="modal-title">National Wetlands Inventory - V2</h4>
-                    </div>
-                    <div id="aboutModalBody" class="modal-body">
-                        <ul class="nav nav-tabs" id="aboutModalTabs">
-                            <li role="presentation" class="active"><a id="aboutTab" href="#aboutTabPane" data-toggle="tab"><i class="fa fa-question-circle"></i>&nbsp;About the Application</a></li>
-                            <li role="presentation"><a id="disclaimerTab" href="#disclaimerTabPane" data-toggle="tab"><i class="fa fa-exclamation-circle"></i>&nbsp;Disclaimer</a></li>
-                            <li role="presentation"><a id="dataLimitationsTab" href="#dataLimitationsTabPane" data-toggle="tab"><i class="fa fa-exclamation-circle"></i>&nbsp;Data Limitations</a></li>
-                            <li role="presentation"><a id="userCautionTab" href="#userCautionTabPane" data-toggle="tab"><i class="fa fa-exclamation-circle"></i>&nbsp;Wetlands Geodatabase User Caution</a></li>
-                        </ul>
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="aboutTabPane"></br>
-                                <!--<p  style="color:black; font-size: larger">App Info is below. This could be a subtitle space.</p>-->
-                                <p>The National Wetlands Inventory (NWI) was established by the US Fish and Wildlife Service (FWS) to conduct a nationwide inventory of U.S. wetlands to provide biologists and others with information on the distribution and type of wetlands to aid in conservation efforts.</p>
-                                <p>This web mapping application provides users with access to over 32 million features that represent the extent, approximate location and type of wetlands and surface water habitats in the United States and U.S. trust territories.</p>
-                                <p>Users can navigate around the map using pan and zoom functions or use the find location button to enter a place name or address. Mobile devices can leverage the GPS functionality to zoom to your current coordinates using the Find My Location button. The application also provides the ability to download wetland maps (PDF) and geospatial wetlands data to your computer.</p>
-                                <p>Refer to the following links for documentation and answers to frequently asked questions:</p>
-                                <ul class="resources" style="background-color: white; text-align: left">
-                                    <li><a target="_blank" href="http://www.fws.gov/wetlands/Documents/Wetlands-Mapper-Instructions-Manual.pdf">Wetlands Mapper Documentation and Instructions Manual</a> (PDF)</li>
-                                    <li><a target="_blank" href="http://www.fws.gov/wetlands/Documents/Frequently-Asked-Questions-Wetlands-Mapper.pdf">Frequently Asked Questions: Wetlands Mapper</a> (PDF)</li>
-                                    <li><a target="_blank" href="http://www.fws.gov/wetlands/Data/Mapper-Introduction.html">Mapper Introduction</a></li>
-                                    <li>VIDEO: <a target="_blank" href="https://www.youtube.com/watch?feature=player_detailpage&v=CB398gj3O04">How to find and use the U.S Fish and Wildlife Service's Wetlands Mapper</a></li>
-                                </ul>
-                                <br/>
-                                <p>For general questions about wetland maps and the Wetlands Mapper: <a target="_blank" href="mailto:Wetlands_Team@fws.gov">Wetlands_Team@fws.gov</a></p>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="disclaimerTabPane"></br>
-                                <h3>Disclaimer</h3>
-                                <p>The use of trade, product, industry or firm names or products is for informative purposes only and does not constitute an endorsement by the U.S. Government or the Fish and Wildlife Service. Links to non-Service Web sites do not imply any official U.S. Fish and Wildlife Service endorsement of the opinions or ideas expressed therein or guarantee the validity of the information provided. Base cartographic information used as part of the Wetlands Mapper has been provided through a license agreement with ESRI and the Department of the Interior.</p>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="dataLimitationsTabPane"></br>
-                                <h3>Data Limitations</h3>
-                                <p>The Service's objective of mapping wetlands and deepwater habitats is to produce reconnaissance level information on the location, type and size of these resources. The maps are prepared from the analysis of high altitude imagery. Wetlands are identified based on vegetation, visible hydrology and geography. A margin of error is inherent in the use of imagery; thus, detailed on-the-ground inspection of any particular site may result in revision of the wetland boundaries or classification established through image analysis.</p>
-                                <p>The accuracy of image interpretation depends on the quality of the imagery, the experience of the image analysts, the amount and quality of the collateral data and the amount of ground truth verification work conducted. Metadata should be consulted to determine the date of the source imagery used and any mapping problems.</p>
-                                <p>Wetlands or other mapped features may have changed since the date of the imagery and/or field work. There may be occasional differences in polygon boundaries or classifications between the information depicted on the map and the actual conditions on site.</p>
-                                <p><b>Exclusions</b> - Certain wetland habitats are excluded from the National mapping program because of the limitations of aerial imagery as the primary data source used to detect wetlands. These habitats include seagrasses or submerged aquatic vegetation that are found in the intertidal and subtidal zones of estuaries and nearshore coastal waters. Some deepwater reef communities (coral or tuberficid worm reefs) have also been excluded from the inventory. These habitats, because of their depth, go undetected by aerial imagery.</p>
-                                <p>By policy, the Service also excludes certain types of "farmed wetlands" as may be defined by the Food Security Act or that do not coincide with the Cowardin et al. definition. Contact the Service's Regional Wetland Coordinator for additional information on what types of farmed wetlands are included on wetland maps.</p>
-                                <p><b>Precautions</b> - Federal, state, and local regulatory agencies with jurisdiction over wetlands may define and describe wetlands in a different manner than that used in this inventory. There is no attempt, in either the design or products of this inventory, to define the limits of proprietary jurisdiction of any Federal, state, or local government or to establish the geographical scope of the regulatory programs of government agencies. Persons intending to engage in activities involving modifications within or adjacent to wetland areas should seek the advice of appropriate federal, state, or local agencies concerning specified agency regulatory programs and proprietary jurisdictions that may affect such activities.</p>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="userCautionTabPane"></br>
-                                <p>The Wetlands Geodatabase is an ongoing effort consisting of data additions, updates, and other data modifications. All datasets utilized outside of the Wetlands Geodatabase or the Wetlands Mapper and supporting web services are only effective as of the date of extraction or delivery by the Wetlands Geodatabase Administrator. The Wetlands Mapper displays the current status of wetlands data availability.</p>
-                                <p>This data set represents the extent, approximate location and type of wetlands and deepwater habitats in the United States and select U.S. trust territories.</p>
-                                <p>These data were developed in conjunction with the publication Cowardin, L.M., V. Carter, F.C. Golet, and E.T. LaRoe. 1979. Classification of Wetlands and Deepwater Habitats of the United States. U.S. Department of the Interior, Fish and Wildlife Service, Washington, DC. FWS/OBS-79/31. Alpha-numeric map codes have been developed to correspond to the wetland and deepwater classifications described.</p>
-                                <p>These spatial data are not designed to stand alone. They were originally developed as topical overlays to the U.S. Geological Survey 1:24,000 or 1:25,000 scale topographic quadrangles or digital imagery. Note that coastline delineations were drawn to follow the extent of wetland or deepwater features as described by this project and may not match the coastline shown in other base maps. The map products were neither designed nor intended to represent legal or regulatory products.</p>
-                                <p>Comments regarding the interpretation or classification of wetlands or deepwater habitats can be directed to the U.S. Fish and Wildlife Service, Division of Ecological Services or by contacting <a target="_blank" href="Wetlands_Team@fws.gov">Wetlands_Team@fws.gov</a></p>
-                                <p>Any use of trade, product, or firm names is for descriptive purposes only and does not imply endorsement by the U.S. Government. For additional information visit the <a target="_blank" href="http://www.fws.gov/wetlands/Data/Wetlands-V2-Product-Summary.html">product summary</a> and <a target="_blank" href="http://www.fws.gov/wetlands/Data/Metadata.html">metadata</a> web pages.</p>
-                            </div>
+    <div class="wim-alert-fixed" id="huc-download-alert" style="position: fixed; top: 50px; right: 325px; color: #000; background-color: #f9f9f9; border-color: rgba(0,0,0.75);">
+        <i class="ion-close-round close-alert" style="float: right;"></i>
+        <!-- Close Button - MUST INCLUDE -->
+        <div id="innerAlert">
+            <h4>
+                <b>Download Data</b>
+            </h4>
+            <p>Please review the Data Download (
+                <a target="_blank" href="https://www.fws.gov/wetlands/Data/Data-Download.html">www.fws.gov/wetlands/Data/Data-Download.html</a>) page for information on how to download data, what is included
+                in the download and data use limitations and disclaimer.</p>
+            <br/>
+            <p>
+                <b>Click the map to select a watershed from which to extract wetland data.</b>
+            </p>
+        </div>
+    </div>
+    <script> < !--To close alert-- >
+            $(".close-alert").click(function () {
+                $(this).parent().slideUp(250);
+                map.getLayer("huc8").setVisibility(false);
+                map.graphics.clear();
+            });
+    </script>
+    <style>
+        .close-alert:hover {
+            cursor: pointer;
+        }
+    </style>
 
+    <div id="aboutModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog  modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true" style="color:gray;">&times;</button>
+                    <h4 class="modal-title">National Wetlands Inventory - V2</h4>
+                </div>
+                <div id="aboutModalBody" class="modal-body">
+                    <ul class="nav nav-tabs" id="aboutModalTabs">
+                        <li role="presentation" class="active">
+                            <a id="aboutTab" href="#aboutTabPane" data-toggle="tab">
+                                <i class="fa fa-question-circle"></i>&nbsp;About the Application</a>
+                        </li>
+                        <li role="presentation">
+                            <a id="disclaimerTab" href="#disclaimerTabPane" data-toggle="tab">
+                                <i class="fa fa-exclamation-circle"></i>&nbsp;Disclaimer</a>
+                        </li>
+                        <li role="presentation">
+                            <a id="dataLimitationsTab" href="#dataLimitationsTabPane" data-toggle="tab">
+                                <i class="fa fa-exclamation-circle"></i>&nbsp;Data Limitations</a>
+                        </li>
+                        <li role="presentation">
+                            <a id="userCautionTab" href="#userCautionTabPane" data-toggle="tab">
+                                <i class="fa fa-exclamation-circle"></i>&nbsp;Wetlands Geodatabase User Caution</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="aboutTabPane">
+                            </br>
+                            <!--<p  style="color:black; font-size: larger">App Info is below. This could be a subtitle space.</p>-->
+                            <p>The National Wetlands Inventory (NWI) was established by the US Fish and Wildlife Service (FWS)
+                                to conduct a nationwide inventory of U.S. wetlands to provide biologists and others with
+                                information on the distribution and type of wetlands to aid in conservation efforts.</p>
+                            <p>This web mapping application provides users with access to over 32 million features that represent
+                                the extent, approximate location and type of wetlands and surface water habitats in the United
+                                States and U.S. trust territories.</p>
+                            <p>Users can navigate around the map using pan and zoom functions or use the find location button
+                                to enter a place name or address. Mobile devices can leverage the GPS functionality to zoom
+                                to your current coordinates using the Find My Location button. The application also provides
+                                the ability to download wetland maps (PDF) and geospatial wetlands data to your computer.</p>
+                            <p>Refer to the following links for documentation and answers to frequently asked questions:</p>
+                            <ul class="resources" style="background-color: white; text-align: left">
+                                <li>
+                                    <a target="_blank" href="http://www.fws.gov/wetlands/Documents/Wetlands-Mapper-Instructions-Manual.pdf">Wetlands Mapper Documentation and Instructions Manual</a> (PDF)</li>
+                                <li>
+                                    <a target="_blank" href="http://www.fws.gov/wetlands/Documents/Frequently-Asked-Questions-Wetlands-Mapper.pdf">Frequently Asked Questions: Wetlands Mapper</a> (PDF)</li>
+                                <li>
+                                    <a target="_blank" href="http://www.fws.gov/wetlands/Data/Mapper-Introduction.html">Mapper Introduction</a>
+                                </li>
+                                <li>VIDEO:
+                                    <a target="_blank" href="https://www.youtube.com/watch?feature=player_detailpage&v=CB398gj3O04">How to find and use the U.S Fish and Wildlife Service's Wetlands Mapper</a>
+                                </li>
+                            </ul>
+                            <br/>
+                            <p>For general questions about wetland maps and the Wetlands Mapper:
+                                <a target="_blank" href="mailto:Wetlands_Team@fws.gov">Wetlands_Team@fws.gov</a>
+                            </p>
                         </div>
-                    </div>
+                        <div role="tabpanel" class="tab-pane" id="disclaimerTabPane">
+                            </br>
+                            <h3>Disclaimer</h3>
+                            <p>The use of trade, product, industry or firm names or products is for informative purposes only
+                                and does not constitute an endorsement by the U.S. Government or the Fish and Wildlife Service.
+                                Links to non-Service Web sites do not imply any official U.S. Fish and Wildlife Service endorsement
+                                of the opinions or ideas expressed therein or guarantee the validity of the information provided.
+                                Base cartographic information used as part of the Wetlands Mapper has been provided through
+                                a license agreement with ESRI and the Department of the Interior.</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="dataLimitationsTabPane">
+                            </br>
+                            <h3>Data Limitations</h3>
+                            <p>The Service's objective of mapping wetlands and deepwater habitats is to produce reconnaissance
+                                level information on the location, type and size of these resources. The maps are prepared
+                                from the analysis of high altitude imagery. Wetlands are identified based on vegetation,
+                                visible hydrology and geography. A margin of error is inherent in the use of imagery; thus,
+                                detailed on-the-ground inspection of any particular site may result in revision of the wetland
+                                boundaries or classification established through image analysis.</p>
+                            <p>The accuracy of image interpretation depends on the quality of the imagery, the experience of
+                                the image analysts, the amount and quality of the collateral data and the amount of ground
+                                truth verification work conducted. Metadata should be consulted to determine the date of
+                                the source imagery used and any mapping problems.</p>
+                            <p>Wetlands or other mapped features may have changed since the date of the imagery and/or field
+                                work. There may be occasional differences in polygon boundaries or classifications between
+                                the information depicted on the map and the actual conditions on site.</p>
+                            <p>
+                                <b>Exclusions</b> - Certain wetland habitats are excluded from the National mapping program
+                                because of the limitations of aerial imagery as the primary data source used to detect wetlands.
+                                These habitats include seagrasses or submerged aquatic vegetation that are found in the intertidal
+                                and subtidal zones of estuaries and nearshore coastal waters. Some deepwater reef communities
+                                (coral or tuberficid worm reefs) have also been excluded from the inventory. These habitats,
+                                because of their depth, go undetected by aerial imagery.</p>
+                            <p>By policy, the Service also excludes certain types of "farmed wetlands" as may be defined by
+                                the Food Security Act or that do not coincide with the Cowardin et al. definition. Contact
+                                the Service's Regional Wetland Coordinator for additional information on what types of farmed
+                                wetlands are included on wetland maps.</p>
+                            <p>
+                                <b>Precautions</b> - Federal, state, and local regulatory agencies with jurisdiction over wetlands
+                                may define and describe wetlands in a different manner than that used in this inventory.
+                                There is no attempt, in either the design or products of this inventory, to define the limits
+                                of proprietary jurisdiction of any Federal, state, or local government or to establish the
+                                geographical scope of the regulatory programs of government agencies. Persons intending to
+                                engage in activities involving modifications within or adjacent to wetland areas should seek
+                                the advice of appropriate federal, state, or local agencies concerning specified agency regulatory
+                                programs and proprietary jurisdictions that may affect such activities.</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="userCautionTabPane">
+                            </br>
+                            <p>The Wetlands Geodatabase is an ongoing effort consisting of data additions, updates, and other
+                                data modifications. All datasets utilized outside of the Wetlands Geodatabase or the Wetlands
+                                Mapper and supporting web services are only effective as of the date of extraction or delivery
+                                by the Wetlands Geodatabase Administrator. The Wetlands Mapper displays the current status
+                                of wetlands data availability.</p>
+                            <p>This data set represents the extent, approximate location and type of wetlands and deepwater
+                                habitats in the United States and select U.S. trust territories.</p>
+                            <p>These data were developed in conjunction with the publication Cowardin, L.M., V. Carter, F.C.
+                                Golet, and E.T. LaRoe. 1979. Classification of Wetlands and Deepwater Habitats of the United
+                                States. U.S. Department of the Interior, Fish and Wildlife Service, Washington, DC. FWS/OBS-79/31.
+                                Alpha-numeric map codes have been developed to correspond to the wetland and deepwater classifications
+                                described.</p>
+                            <p>These spatial data are not designed to stand alone. They were originally developed as topical
+                                overlays to the U.S. Geological Survey 1:24,000 or 1:25,000 scale topographic quadrangles
+                                or digital imagery. Note that coastline delineations were drawn to follow the extent of wetland
+                                or deepwater features as described by this project and may not match the coastline shown
+                                in other base maps. The map products were neither designed nor intended to represent legal
+                                or regulatory products.</p>
+                            <p>Comments regarding the interpretation or classification of wetlands or deepwater habitats can
+                                be directed to the U.S. Fish and Wildlife Service, Division of Ecological Services or by
+                                contacting
+                                <a target="_blank" href="Wetlands_Team@fws.gov">Wetlands_Team@fws.gov</a>
+                            </p>
+                            <p>Any use of trade, product, or firm names is for descriptive purposes only and does not imply
+                                endorsement by the U.S. Government. For additional information visit the
+                                <a target="_blank"
+                                    href="http://www.fws.gov/wetlands/Data/Wetlands-V2-Product-Summary.html">product summary</a> and
+                                <a target="_blank" href="http://www.fws.gov/wetlands/Data/Metadata.html">metadata</a> web pages.</p>
+                        </div>
 
-                    <div class="modal-footer">
-                        <button class=" btn btn-default close" type="button" data-dismiss="modal" aria-hidden="true" style="color:gray;" class="btn btn-default">Close</button>
                     </div>
-                </div><!-- /.modal-content -->
-            </div> <!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+                </div>
 
-        <!-- Begin page content -->
-        <div class="container-fluid keepit100">
-            <div class="row keepit100">
-                <!--<div id="sidebar" class="col-xs-7 col-sm-3 col-md-3 sidebar sidebar-left sidebar-animate sidebar-md-show no-col-padding">-->
-                <div id="sidebar" class="col-xs-11 col-sm-10 col-md-3 col-lg-2 sidebar sidebar-left sidebar-animate sidebar-md-show no-col-padding">
-                    <!-- # include line below to get accordion effect with panels - opening one closes the others. remember closing div tag at bottom -->
-                    <!--<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">-->
-                    <!-- include btn-toolbar below to put legend and geosearch buttons next to eachother -->
-                    <!--<div class="btn-toolbar" style="margin-bottom: 2px;">-->
-                    <!--<div class="btn-group no-col-padding">-->
-                    <!-- sidebar legend button. to be rmoved if we like the in-map legend toggle -->
-                    <!--<button id="legendButtonSidebar" type="button" class="btn btn-default" ><span class="glyphicon glyphicon-list"></span> Legend</button>-->
-                    <!--<button id="geosearchButtonSidebar" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Geosearch</button>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--<button id="legendButtonSidebar" type="button" class="btn btn-default" ><span class="glyphicon glyphicon-list"></span> Legend</button>-->
-                    <div class="panel panel-default wim-sidebar-panel">
-                        <div class="panel-heading" id="basemapsHeader">
+                <div class="modal-footer">
+                    <button class=" btn btn-default close" type="button" data-dismiss="modal" aria-hidden="true" style="color:gray;" class="btn btn-default">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- Begin page content -->
+    <div class="container-fluid keepit100">
+        <div class="row keepit100">
+            <!--<div id="sidebar" class="col-xs-7 col-sm-3 col-md-3 sidebar sidebar-left sidebar-animate sidebar-md-show no-col-padding">-->
+            <div id="sidebar" class="col-xs-11 col-sm-10 col-md-3 col-lg-2 sidebar sidebar-left sidebar-animate sidebar-md-show no-col-padding">
+                <!-- # include line below to get accordion effect with panels - opening one closes the others. remember closing div tag at bottom -->
+                <!--<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">-->
+                <!-- include btn-toolbar below to put legend and geosearch buttons next to eachother -->
+                <!--<div class="btn-toolbar" style="margin-bottom: 2px;">-->
+                <!--<div class="btn-group no-col-padding">-->
+                <!-- sidebar legend button. to be rmoved if we like the in-map legend toggle -->
+                <!--<button id="legendButtonSidebar" type="button" class="btn btn-default" ><span class="glyphicon glyphicon-list"></span> Legend</button>-->
+                <!--<button id="geosearchButtonSidebar" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Geosearch</button>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<button id="legendButtonSidebar" type="button" class="btn btn-default" ><span class="glyphicon glyphicon-list"></span> Legend</button>-->
+                <div class="panel panel-default wim-sidebar-panel">
+                    <div class="panel-heading" id="basemapsHeader">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#basemapsPanel" aria-expanded="false" aria-controls="basemapsPanel">
+                                Basemaps
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="basemapsPanel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="basemapsHeader">
+                        <div class="panel-body collapse in">
+                            <button id="btnStreets" class="btn btn-default basemapBtn equalize">
+                                <img class="basemapThumb" alt="" src="images/streets.jpg">
+                                <br class="basemapThumb">Streets</button>
+                            <button id="btnSatellite" class="btn btn-default basemapBtn equalize">
+                                <img class="basemapThumb" alt="" src="images/satellite.jpg">
+                                <br class="basemapThumb">Satellite</button>
+                            <button id="btnHybrid" class="btn btn-default basemapBtn equalize">
+                                <img class="basemapThumb" alt="" src="images/imagery_labels.jpg">
+                                <br class="basemapThumb">Hybrid</button>
+                            <button id="btnTopo" class="btn btn-default basemapBtn equalize">
+                                <img class="basemapThumb" alt="" src="images/topo.jpg">
+                                <br class="basemapThumb">Topo</button>
+                            <button id="btnTerrain" class="btn btn-default basemapBtn equalize">
+                                <img class="basemapThumb" alt="" src="images/terrain.jpg">
+                                <br class="basemapThumb">Terrain</button>
+                            <button id="btnGray" class="btn btn-default basemapBtn equalize">
+                                <img class="basemapThumb" alt="" src="images/gray.jpg">
+                                <br class="basemapThumb">Gray</button>
+                            <button id="btnOSM" class="btn btn-default basemapBtn equalize">
+                                <img class="basemapThumb" alt="" src="images/osm.jpg">
+                                <br class="basemapThumb">Open Street Map</button>
+                            <button id="btnNatGeo" class="btn btn-default basemapBtn equalize">
+                                <img class="basemapThumb" alt="" src="images/natgeo.jpg">
+                                <br class="basemapThumb">NatGeo</button>
+                            <button id="btnUsgsTopo" class="btn btn-default basemapBtn equalize">
+                                <img class="basemapThumb" alt="" src="images/usgs_topo.jpg">
+                                <br class="basemapThumb">USGS Topo</button>
+                            <button id="btnNatlMap" class="btn btn-default basemapBtn equalize">
+                                <img class="basemapThumb" alt="" src="images/national_map.jpg">
+                                <br class="basemapThumb">Nat'l Map</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="panel panel-default wim-sidebar-panel">
+                    <div class="panel-heading" id="layersPanelHeader">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" href="#layersPanel" aria-expanded="true" aria-controls="layersPanel">
+                                Map Layers
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="layersPanel" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="layersPanelHeader">
+                        <div id="toggle" style="padding: 2px 2px;"></div>
+                    </div>
+                </div>
+                <!-- # closing div tag for accordion style panels -->
+                <!--</div>-->
+            </div>
+            <div class="col-md-9 col-lg-10 col-md-offset-3 col-lg-offset-2 no-col-padding keepit100">
+                <!-- legend, associated with legend buttons. to be removed if we stick with the in-map legend toggle -->
+                <!--<div id="legend" class="legend" style="display: none" >-->
+                <!--<button id="legendClose" type="button" class="close" data-dismiss="legend" aria-label="Close" aria-hidden="true">x</button>-->
+                <!--<h4><b>Explanation</b></h4>-->
+                <!--<div id="legendDiv"></div>-->
+                <!--</div>-->
+
+                <div id="mapDiv">
+
+                    <div id="legendElement" class="panel panel-default legendClass">
+                        <div id="legendHeading" class=" legendHeading" role="tab">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse"  href="#basemapsPanel" aria-expanded="false" aria-controls="basemapsPanel">
-                                    Basemaps
+                                <a data-toggle="collapse" style="text-decoration: none" href="#legendCollapse" aria-expanded="true" aria-controls="collapseOne">
+                                    <span class="glyphicon glyphicon-list"></span>
+                                    Explanation
                                 </a>
                             </h4>
                         </div>
-                        <div id="basemapsPanel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="basemapsHeader">
-                            <div class="panel-body collapse in">
-                                <button id="btnStreets" class="btn btn-default basemapBtn equalize"><img class="basemapThumb" alt="" src="images/streets.jpg"><br class="basemapThumb">Streets</button>
-                                <button id="btnSatellite" class="btn btn-default basemapBtn equalize" ><img class="basemapThumb" alt="" src="images/satellite.jpg"><br class="basemapThumb">Satellite</button>
-                                <button id="btnHybrid" class="btn btn-default basemapBtn equalize"><img class="basemapThumb" alt="" src="images/imagery_labels.jpg"><br class="basemapThumb">Hybrid</button>
-                                <button id="btnTopo" class="btn btn-default basemapBtn equalize"><img class="basemapThumb" alt="" src="images/topo.jpg"><br class="basemapThumb">Topo</button>
-                                <button id="btnTerrain" class="btn btn-default basemapBtn equalize"><img class="basemapThumb" alt="" src="images/terrain.jpg"><br class="basemapThumb">Terrain</button>
-                                <button id="btnGray" class="btn btn-default basemapBtn equalize" ><img class="basemapThumb" alt="" src="images/gray.jpg"><br class="basemapThumb">Gray</button>
-                                <button id="btnOSM" class="btn btn-default basemapBtn equalize"><img class="basemapThumb" alt="" src="images/osm.jpg"><br class="basemapThumb">Open Street Map</button>
-                                <button id="btnNatGeo" class="btn btn-default basemapBtn equalize"><img class="basemapThumb" alt="" src="images/natgeo.jpg"><br class="basemapThumb">NatGeo</button>
-                                <button id="btnUsgsTopo" class="btn btn-default basemapBtn equalize"><img class="basemapThumb" alt="" src="images/usgs_topo.jpg"><br class="basemapThumb">USGS Topo</button>
-                                <button id="btnNatlMap" class="btn btn-default basemapBtn equalize"><img class="basemapThumb" alt="" src="images/national_map.jpg"><br class="basemapThumb">Nat'l Map</button>
-                            </div>
-
+                        <div id="legendCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                            <div id="legendDiv" class="panel-body"></div>
                         </div>
                     </div>
-                    <div class="panel panel-default wim-sidebar-panel">
-                        <div class="panel-heading" id="layersPanelHeader">
-                            <h4 class="panel-title">
-                                <a class="collapsed" data-toggle="collapse" href="#layersPanel" aria-expanded="true" aria-controls="layersPanel">
-                                    Map Layers
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="layersPanel" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="layersPanelHeader">
-                            <div id="toggle" style="padding: 2px 2px;"></div>
-                        </div>
-                    </div>
-                    <!-- # closing div tag for accordion style panels -->
-                    <!--</div>-->
                 </div>
-                <div class="col-md-9 col-lg-10 col-md-offset-3 col-lg-offset-2 no-col-padding keepit100">
-                    <!-- legend, associated with legend buttons. to be removed if we stick with the in-map legend toggle -->
-                    <!--<div id="legend" class="legend" style="display: none" >-->
-                    <!--<button id="legendClose" type="button" class="close" data-dismiss="legend" aria-label="Close" aria-hidden="true">x</button>-->
-                    <!--<h4><b>Explanation</b></h4>-->
-                    <!--<div id="legendDiv"></div>-->
-                    <!--</div>-->
 
-                    <div id="mapDiv">
+                <div id="homeButton"></div>
+                <div id="locateButton"></div>
 
-                        <div id="legendElement" class="panel panel-default legendClass">
-                            <div id="legendHeading" class=" legendHeading" role="tab">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" style="text-decoration: none"  href="#legendCollapse" aria-expanded="true" aria-controls="collapseOne">
-                                        <span class="glyphicon glyphicon-list"></span>
-                                        Explanation
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="legendCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                                <div id="legendDiv" class="panel-body"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="homeButton"></div>
-                    <div id="locateButton"></div>
-
-                    <div id="latLngScale" class="latLngScale">
-                        <span class="hover-content"> <b>Map scale </b></span>
-                        1:<span id="scale"></span> <br>
-                        <span class="hover-content"><b>Latitude</b></span>
-                        <span id="latitude">y</span> |
-                        <span class="hover-content"> <b>Longitude</b></span>
-                        <span id="longitude">x</span>
-                        <span id="mapCenterLabel"  class="hover-content"> (center)</span>
-                    </div>
-
+                <div id="latLngScale" class="latLngScale">
+                    <span class="hover-content">
+                        <b>Map scale </b>
+                    </span>
+                    1:
+                    <span id="scale"></span>
+                    <br>
+                    <span class="hover-content">
+                        <b>Latitude</b>
+                    </span>
+                    <span id="latitude">y</span> |
+                    <span class="hover-content">
+                        <b>Longitude</b>
+                    </span>
+                    <span id="longitude">x</span>
+                    <span id="mapCenterLabel" class="hover-content"> (center)</span>
                 </div>
-                <div class="col-xs-7 col-sm-3 col-md-3 sidebar sidebar-right sidebar-animate"></div>
+
             </div>
+            <div class="col-xs-7 col-sm-3 col-md-3 sidebar sidebar-right sidebar-animate"></div>
         </div>
-    </body>
+    </div>
+</body>
+
 </html>

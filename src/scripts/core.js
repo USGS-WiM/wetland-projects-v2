@@ -613,26 +613,61 @@ require([
         }
     });
 
-    var geocoder = new Geocoder({
-        value: '',
-        maxLocations: 25,
-        autoComplete: true,
-        arcgisGeocoder: true,
-        autoNavigate: false,
-        map: map
-    }, 'geosearch');
-    geocoder.startup();
-    geocoder.on('select', geocodeSelect);
-    geocoder.on('findResults', geocodeResults);
-    geocoder.on('clear', clearFindGraphics);
-    on(geocoder.inputNode, 'keydown', function (e) {
-        if (e.keyCode == 13) {
-            setSearchExtent();
-        }
-    });
+   //on(search,'search-results', function(e) {
+           //$('#geosearchModal').modal('hide');
+       //});
+   
+       // create search_api widget in element "geosearch"
+       search_api.create( "geosearch", {
+           on_result: function(o) {
+               // what to do when a location is found
+               // o.result is geojson point feature of location with properties
+   
+               // zoom to location
+               require(["esri/geometry/Extent"], function(Extent) {
+                   var noExtents = ["GNIS_MAJOR", "GNIS_MINOR", "ZIPCODE", "AREACODE"];
+                   var noExtentCheck = noExtents.indexOf(o.result.properties["Source"])
+                   $("#geosearchModal").modal('hide');
+                   if (noExtentCheck == -1) {
+                       map.setExtent(
+                           new esri.geometry.Extent({
+                               xmin: o.result.properties.LonMin,
+                               ymin: o.result.properties.LatMin,
+                               xmax: o.result.properties.LonMax,
+                               ymax: o.result.properties.LatMax,
+                               spatialReference: {"wkid":4326}
+                           }),
+                           true
+                       );
+                   } else {
+                       //map.setCenter();
+                       require( ["esri/geometry/Point"], function(Point) {
+                           map.centerAndZoom(
+                               new Point( o.result.properties.Lon, o.result.properties.Lat ),
+                               12
+                           );
+                       });
+                   }
+   
+               });
+   
+           },
+           "include_usgs_sw": true,
+           "include_usgs_gw": true,
+           "include_usgs_sp": true,
+           "include_usgs_at": true,
+           "include_usgs_ot": true,
+           "include_huc2": true,
+           "include_huc4": true,
+           "include_huc6": true,
+           "include_huc8": true,
+           "include_huc10": true,
+           "include_huc12": true
+ 
+      });
 
     // Symbols
-    var sym = createPictureSymbol('../images/purple-pin.png', 0, 12, 13, 24);
+    /* var sym = createPictureSymbol('../images/purple-pin.png', 0, 12, 13, 24); */
 
     map.on('load', function (){
         map.infoWindow.set('highlight', false);
@@ -640,18 +675,18 @@ require([
     });
 
     // Geosearch functions
-    on(dom.byId('btnGeosearch'),'click', geosearch);
+    /* on(dom.byId('btnGeosearch'),'click', geosearch); */
 
     // Optionally confine search to map extent
-    function setSearchExtent (){
-        geocoder.activeGeocoder.searchExtent = null;
+    //function setSearchExtent (){
+        //geocoder.activeGeocoder.searchExtent = null;
         /*if (dom.byId('chkExtent').checked === 1) {
             geocoder.activeGeocoder.searchExtent = map.extent;
         } else {
             geocoder.activeGeocoder.searchExtent = null;
         }*/
-    }
-    function geosearch() {
+    //
+    /* function geosearch() {
         setSearchExtent();
         var def = geocoder.find();
         def.then(function (res){
@@ -659,16 +694,16 @@ require([
         });
         // Close modal
         $('#geosearchModal').modal('hide');
-    }
-    function geocodeSelect(item) {
+    } */
+    /* function geocodeSelect(item) {
         clearFindGraphics();
         var g = (item.graphic ? item.graphic : item.result.feature);
         g.setSymbol(sym);
         //addPlaceGraphic(item.result,g.symbol);
         // Close modal
         //$('#geosearchModal').modal('hide');
-    }
-    function geocodeResults(places) {
+    } */
+    /* function geocodeResults(places) {
         places = places.results;
         if (places.length > 0) {
             clearFindGraphics();
@@ -687,15 +722,15 @@ require([
         } else {
             //alert('Sorry, address or place not found.');  // TODO
         }
-    }
-    function stripTitle(title) {
+    } */
+    /* function stripTitle(title) {
         var i = title.indexOf(',');
         if (i > 0) {
             title = title.substring(0,i);
         }
         return title;
-    }
-    function addPlaceGraphic(item,symbol)  {
+    } */
+    /* function addPlaceGraphic(item,symbol)  {
         var place = {};
         var attributes,infoTemplate,pt,graphic;
         pt = item.feature.geometry;
@@ -708,21 +743,21 @@ require([
         // Add to map
         map.graphics.add(graphic);
     }
-
-    function zoomToPlaces(places) {
+ */
+    /* function zoomToPlaces(places) {
         var multiPoint = new Multipoint(map.spatialReference);
         for (var i = 0; i < places.length; i++) {
             multiPoint.addPoint(places[i].feature.geometry);
         }
         map.setExtent(multiPoint.getExtent().expand(2.0));
-    }
+    } */
 
-    function clearFindGraphics() {
+    /* function clearFindGraphics() {
         map.infoWindow.hide();
         map.graphics.clear();
-    }
+    } */
 
-    function createPictureSymbol(url, xOffset, yOffset, xWidth, yHeight) {
+   /*  function createPictureSymbol(url, xOffset, yOffset, xWidth, yHeight) {
         return new PictureMarkerSymbol(
             {
                 'angle': 0,
@@ -731,7 +766,7 @@ require([
                 'contentType': 'image/png',
                 'width':xWidth, 'height': yHeight
             });
-    }
+    } */
 
     function setCursorByID(id,cursorStyle) {
         var elem;
