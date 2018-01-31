@@ -130,12 +130,17 @@ require([
 
         map = new Map('mapDiv', {
             basemap: 'streets',
-            extent: new Extent(-14638882.654811008, 2641706.3772205533, -6821514.898031538, 6403631.161302788, new SpatialReference({ wkid:3857 }))
+            extent: new Extent(-16339179.166, 97839.396, -3541786.143, 9059928.089, new SpatialReference({ wkid:3857 }))
         });
 
         var home = new HomeButton({
             map: map,
-            extent: new Extent(-14638882.654811008, 2641706.3772205533, -6821514.898031538, 6403631.161302788, new SpatialReference({ wkid:3857 }))
+            extent: new Extent(-16339179.166, 97839.396, -3541786.143, 9059928.089, new SpatialReference({ wkid:3857 })),
+            home: function() {
+                $('#zoomToSelect').val('usa');
+                map.setExtent(this.extent);
+            }
+
         }, "homeButton");
         home.startup();
 
@@ -408,7 +413,7 @@ require([
         //});
 
         // create search_api widget in element "geosearch"
-        search_api.create("geosearch", {
+        /*search_api.create("geosearch", {
             on_result: function (o) {
                 // what to do when a location is found
                 // o.result is geojson point feature of location with properties
@@ -454,109 +459,27 @@ require([
             "include_huc10": true,
             "include_huc12": true
 
-        });
+        }); */
 
         // Symbols
-        /* var sym = createPictureSymbol('../images/purple-pin.png', 0, 12, 13, 24); */
+        var sym = createPictureSymbol('../images/purple-pin.png', 0, 12, 13, 24); 
+
+        function createPictureSymbol(url, xOffset, yOffset, xWidth, yHeight) {
+            return new PictureMarkerSymbol(
+                {
+                    'angle': 0,
+                    'xoffset': xOffset, 'yoffset': yOffset, 'type': 'esriPMS',
+                    'url': url,
+                    'contentType': 'image/png',
+                    'width':xWidth, 'height': yHeight
+                });
+        }
 
         map.on('load', function () {
             map.infoWindow.set('highlight', false);
             map.infoWindow.set('titleInBody', false);
         });
 
-        // Geosearch functions
-        /* on(dom.byId('btnGeosearch'),'click', geosearch); */
-
-        // Optionally confine search to map extent
-        //function setSearchExtent (){
-        //geocoder.activeGeocoder.searchExtent = null;
-        /*if (dom.byId('chkExtent').checked === 1) {
-            geocoder.activeGeocoder.searchExtent = map.extent;
-        } else {
-            geocoder.activeGeocoder.searchExtent = null;
-        }*/
-        //
-        /* function geosearch() {
-            setSearchExtent();
-            var def = geocoder.find();
-            def.then(function (res){
-                geocodeResults(res);
-            });
-            // Close modal
-            $('#geosearchModal').modal('hide');
-        } */
-        /* function geocodeSelect(item) {
-            clearFindGraphics();
-            var g = (item.graphic ? item.graphic : item.result.feature);
-            g.setSymbol(sym);
-            //addPlaceGraphic(item.result,g.symbol);
-            // Close modal
-            //$('#geosearchModal').modal('hide');
-        } */
-        /* function geocodeResults(places) {
-            places = places.results;
-            if (places.length > 0) {
-                clearFindGraphics();
-                var symbol = sym;
-                // Create and add graphics with pop-ups
-                for (var i = 0; i < places.length; i++) {
-                    //addPlaceGraphic(places[i], symbol);
-                }
-                //zoomToPlaces(places);
-                if (places[0].extent != null) {
-                    map.setExtent(places[0].extent, true)
-                } else {
-                    var centerPoint = new Point(places[0].feature.geometry);
-                    map.centerAndZoom(centerPoint, 17);
-                }
-            } else {
-                //alert('Sorry, address or place not found.');  // TODO
-            }
-        } */
-        /* function stripTitle(title) {
-            var i = title.indexOf(',');
-            if (i > 0) {
-                title = title.substring(0,i);
-            }
-            return title;
-        } */
-        /* function addPlaceGraphic(item,symbol)  {
-            var place = {};
-            var attributes,infoTemplate,pt,graphic;
-            pt = item.feature.geometry;
-            place.address = item.name;
-            place.score = item.feature.attributes.Score;
-            // Graphic components
-            attributes = { address:stripTitle(place.address), score:place.score, lat:pt.getLatitude().toFixed(2), lon:pt.getLongitude().toFixed(2) };
-            infoTemplate = new PopupTemplate({title:'{address}', description: 'Latitude: {lat}<br/>Longitude: {lon}'});
-            graphic = new Graphic(pt,symbol,attributes,infoTemplate);
-            // Add to map
-            map.graphics.add(graphic);
-        }
-        */
-        /* function zoomToPlaces(places) {
-            var multiPoint = new Multipoint(map.spatialReference);
-            for (var i = 0; i < places.length; i++) {
-                multiPoint.addPoint(places[i].feature.geometry);
-            }
-            map.setExtent(multiPoint.getExtent().expand(2.0));
-        } */
-
-        /* function clearFindGraphics() {
-            map.infoWindow.hide();
-            map.graphics.clear();
-        } */
-
-        /*  function createPictureSymbol(url, xOffset, yOffset, xWidth, yHeight) {
-             return new PictureMarkerSymbol(
-                 {
-                     'angle': 0,
-                     'xoffset': xOffset, 'yoffset': yOffset, 'type': 'esriPMS',
-                     'url': url,
-                     'contentType': 'image/png',
-                     'width':xWidth, 'height': yHeight
-                 });
-         } */
 
         function setCursorByID(id, cursorStyle) {
             var elem;
@@ -618,6 +541,84 @@ require([
             });
 
         });
+
+        function geosearch() {
+            setSearchExtent();
+            var def = geocoder.find();
+            def.then(function (res){
+                geocodeResults(res);
+            });
+        }
+        
+        var geocoder = new Geocoder({
+            value: '',
+            maxLocations: 25,
+            autoComplete: true,
+            arcgisGeocoder: true,
+            autoNavigate: false,
+            map: map
+        }, 'geosearch');
+        geocoder.startup();
+        geocoder.on('select', geocodeSelect);
+        geocoder.on('findResults', geocodeResults);
+        geocoder.on('clear', clearFindGraphics);
+        on(geocoder.inputNode, 'keydown', function (e) {
+            if (e.keyCode == 13) {
+                setSearchExtent();
+            }
+        });
+
+        function geocodeSelect(item) {
+            clearFindGraphics();
+            var g = (item.graphic ? item.graphic : item.result.feature);
+            g.setSymbol(sym);
+        }
+
+        function clearFindGraphics() {
+            map.infoWindow.hide();
+            map.graphics.clear();
+        }
+
+        function geocodeResults(places) {
+            places = places.results;
+            if (places.length > 0) {
+                clearFindGraphics();
+                var symbol = sym;
+                //zoomToPlaces(places);
+                if (places[0].extent != null && places[0].extent.xmax != "NaN" && places[0].extent.xmin != places[0].extent.xmax) {
+                    map.setExtent(places[0].extent, true)
+                    //map.setLevel(12);
+                    $(".geosearchWarning").hide();
+                    // Close modal
+                    $('#geosearchModal').modal('hide');
+                } else if ((places[0].feature.geometry != null && places[0].feature.geometry.x != "NaN")) {
+                    var centerPoint = new Point(places[0].feature.geometry);
+                    map.centerAndZoom(centerPoint, 17);
+                    $(".geosearchWarning").hide();
+                    // Close modal
+                    $('#geosearchModal').modal('hide');
+                } else {
+                    // code to give warning to the user that the search didn't work
+                    $(".geosearchWarning").show();
+                }
+            } else {
+                //alert('Sorry, address or place not found.');  // TODO
+            }
+        }
+
+        // Geosearch functions
+    on(dom.byId('btnGeosearch'),'click', geosearch);
+
+        // Optionally confine search to map extent
+    function setSearchExtent (){
+        geocoder.activeGeocoder.searchExtent = null;
+        /*if (dom.byId('chkExtent').checked === 1) {
+            geocoder.activeGeocoder.searchExtent = map.extent;
+        } else {
+            geocoder.activeGeocoder.searchExtent = null;
+        }*/
+    }
+
 
         require([
             'esri/InfoTemplate',
@@ -907,6 +908,31 @@ function hucLinkListener(HUCNumber) {
         //console.log(data);
     });
 }
+
+//set extent for 'Zoom to region' panel
+function zoomToFunction() {
+    var select = $('#zoomToSelect').val();
+    var newExtent;
+    switch(select) {
+        case "usa":
+            newExtent = new esri.geometry.Extent(-16339179.166, 97839.396, -3541786.143, 9059928.089, map.spatialReference);
+            break;
+        case "ak":
+            newExtent = new esri.geometry.Extent(-20039665.83, 6649626.025, -10625354.198, 13097026.174, map.spatialReference);
+            break;
+        case "hi":
+            newExtent = new esri.geometry.Extent(-19616798.939, 1673053.675, -16468815.698, 3390135.078, map.spatialReference);
+            break;
+        case "pr":
+            newExtent = new esri.geometry.Extent(-7880962.696, 1764778.109, -6836527.142, 2317570.698, map.spatialReference);
+            break;
+        case "pti":
+            newExtent = new esri.geometry.Extent(15728907.491, 1378312.494, 16984921.185, 2261313.045, map.spatialReference);
+            break;
+    }
+    map.setExtent(newExtent);
+}
+
 
 $(document).ready(function () {
     //7 lines below are handler for the legend buttons. to be removed if we stick with the in-map legend toggle

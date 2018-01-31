@@ -32,10 +32,9 @@
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>
+    <script type="text/javascript" src="bower_components/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/bootstrap-sidebar/dist/js/sidebar.js"></script>
-    <script src="bower_components/bootstrap-map-js/dist/js/bootstrapmap.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -104,24 +103,22 @@
                     <h4 class="modal-title">Geosearch</h4>
                 </div>
                 <div class="modal-body">
+                    <label style="font-weight: normal">Enter a street address, city or place name
+                        <br/>For coordinates, enter decimal degrees in Longitude, Latitude format</label>
                     <div class="form-group">
-                        <div id="geosearch"></div>
+                        <div id="geosearch">
+                            <div id="sapi_searchTextBoxDiv"></div>
+                        </div>
                     </div>
                     <form id="geosearch-form" class="form-inline">
-                        <div class="search-help">
-                            <b>Supported Search Strings:</b>
-                            <code>GNIS locations</code>
-                            <code>USGS Sites</code>
-                            <code>Zip Codes</code>
-                            <code>Area Codes</code>
-                            <code>States</code>
-                            <code>Lat/Long (ie. '43.9,-72.1')</code>
-                            <code>Street Address</code>
-                            <br/>
-                            <br/> Search provided by
-                            <a href="https://txpub.usgs.gov/dss/search_api/2.0/" target="_blank">USGS Search JavaScript API</a>
-                        </div>
+                        <button id="btnGeosearch" type="button" class="btn btn-success btn-fixed"> Go </button>
+                        <button id="btnDismiss" type="submit" class="btn btn-default btn-fixed" data-dismiss="modal">Dismiss</button>
                     </form>
+                    <div class="geosearchWarning">
+                        <label>The location is invalid. Make sure that coordinate searchs are in the following format: Longitude,
+                            Latitude
+                        </label>
+                    </div>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -177,11 +174,11 @@
         </div>
     </div>
     <script> //--To close alert--
-            $(".close-alert").click(function () {
-                $(this).parent().slideUp(250);
-                map.getLayer("huc8").setVisibility(false);
-                map.graphics.clear();
-            });
+        $(".close-alert").click(function () {
+            $(this).parent().slideUp(250);
+            map.getLayer("huc8").setVisibility(false);
+            map.graphics.clear();
+        });
     </script>
     <style>
         .close-alert:hover {
@@ -307,7 +304,8 @@
                                 Golet, and E.T. LaRoe. 1979. Classification of Wetlands and Deepwater Habitats of the United
                                 States. U.S. Department of the Interior, Fish and Wildlife Service, Washington, DC. FWS/OBS-79/31.
                                 Alpha-numeric map codes have been developed to correspond to the wetland and deepwater classifications
-                                described.</p>
+                                described.
+                            </p>
                             <p>These spatial data are not designed to stand alone. They were originally developed as topical
                                 overlays to the U.S. Geological Survey 1:24,000 or 1:25,000 scale topographic quadrangles
                                 or digital imagery. Note that coastline delineations were drawn to follow the extent of wetland
@@ -321,8 +319,7 @@
                             </p>
                             <p>Any use of trade, product, or firm names is for descriptive purposes only and does not imply
                                 endorsement by the U.S. Government. For additional information visit the
-                                <a target="_blank"
-                                    href="http://www.fws.gov/wetlands/Data/Wetlands-V2-Product-Summary.html">product summary</a> and
+                                <a target="_blank" href="http://www.fws.gov/wetlands/Data/Wetlands-V2-Product-Summary.html">product summary</a> and
                                 <a target="_blank" href="http://www.fws.gov/wetlands/Data/Metadata.html">metadata</a> web pages.</p>
                         </div>
 
@@ -409,6 +406,27 @@
                     </div>
                     <div id="layersPanel" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="layersPanelHeader">
                         <div id="toggle" style="padding: 2px 2px;"></div>
+                    </div>
+                </div>
+                <div class="panel panel-default wim-sidebar-panel">
+                    <div class="panel-heading" id="zoomToRegionHeader">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#zoomToRegion" aria-expanded="false" aria-controls="zoomToRegion">
+                                Zoom to Region
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="zoomToRegion" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="zoomToRegionHeader">
+                        <div class="panel-body collapse in">
+                            <label>Zoom to</label>
+                            <select id="zoomToSelect" onchange="zoomToFunction()">
+                                    <option value="usa">Continental US</option>
+                                    <option value="ak">Alaska</option>
+                                    <option value="hi">Hawaii</option>
+                                    <option value="pr">Puerto Rico</option>
+                                    <option value="pti">Pacific Trust Islands</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <!-- # closing div tag for accordion style panels -->
