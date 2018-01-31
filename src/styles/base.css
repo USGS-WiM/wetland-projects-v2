@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800);
 @import url(http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
-a {
+/*a {
   text-decoration: none;
 }
 a:hover {
@@ -124,7 +124,7 @@ a:focus {
   margin: 0 auto;
   border: none;
 }
-#sidebar .wim-sidebar-panel .panel-heading {
+/*#sidebar .wim-sidebar-panel .panel-heading {
   box-sizing: border-box;
   margin: 0 auto;
   padding: 0;
@@ -149,7 +149,7 @@ a:focus {
   content: '\f3d3';
   font-family: 'ionicons';
   color: #6F758E;
-}
+} 
 #sidebar .wim-sidebar-panel .panel-heading h4 a:hover {
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.5);
@@ -160,7 +160,7 @@ a:focus {
 }
 #sidebar .wim-sidebar-panel .panel-heading h4 a:active {
   background-color: rgba(69, 116, 204, 0.2);
-}
+} 
 #sidebar .panel-collapse {
   background-color: #FFFFFF;
 }
@@ -433,7 +433,7 @@ input[type=range]::-moz-range-thumb {
   cursor: pointer;
   margin-top: -7px;
 }
-/* All the same stuff for IE */
+/* All the same stuff for IE 
 input[type=range]::-ms-thumb {
   -webkit-appearance: none;
   height: 16px;
