@@ -497,6 +497,9 @@ require([
             // Geosearch nav menu is selected
             $('#geosearchNav').click(function () {
                 showModal();
+                on(dom.byId('geosearch_input'), 'change', function () {
+                    $(".geosearchWarning").hide();
+                })
             });
 
             function showAboutModal() {
@@ -579,6 +582,7 @@ require([
             map.graphics.clear();
         }
 
+        //$(".geosearchWarning").hide(); //hidden for now; may need to get rid of this, not in SWI mapper, shows until hit "Go", doesn't show when location unavailable
         function geocodeResults(places) {
             places = places.results;
             if (places.length > 0) {
@@ -602,9 +606,9 @@ require([
                     $(".geosearchWarning").show();
                 }
             } else {
-                //alert('Sorry, address or place not found.');  // TODO
+                $(".geosearchWarning").show();//alert('Sorry, address or place not found.');  // TODO
             }
-        }
+        } 
 
         // Geosearch functions
     on(dom.byId('btnGeosearch'),'click', geosearch);

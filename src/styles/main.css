@@ -98,6 +98,10 @@ body {
     border-radius: 5px;
 }
 
+.geosearchWarning {
+    display: none;
+}
+
 /*basemapBtn elements manually set to width of widest - temp solution until dynamic solution is implemented */
 .basemapBtn {
     width: 86px;
