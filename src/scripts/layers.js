@@ -26,7 +26,7 @@ require([
             'includeInLayerList': true,
             'layers': {
                 'Active' : {
-                    'url': 'https://fwsprimary.wim.usgs.gov/server/rest/services/WetlandsProjects/Recent_and_Current_Projects/MapServer',
+                    'url': 'https://gis.usgs.gov/sciencebase2/rest/services/Catalog/5a8f0694e4b06990605c5378/MapServer',
                     'visibleLayers': [0],
                     'options': {
                         'id': 'active',
@@ -42,8 +42,8 @@ require([
                         'includeLegend' : true,
                     }
                 },
-                'recent' : {
-                    'url': 'https://fwsprimary.wim.usgs.gov/server/rest/services/WetlandsProjects/Recent_and_Current_Projects/MapServer',
+                'Recent' : {
+                    'url': 'https://gis.usgs.gov/sciencebase2/rest/services/Catalog/5a8f0694e4b06990605c5378/MapServer',
                     'visibleLayers': [1],
                     'options': {
                         'id': 'recent',
