@@ -130,13 +130,13 @@ require([
 
         map = new Map('mapDiv', {
             basemap: 'streets',
-            extent: new Extent(-16339179.166, 97839.396, -3541786.143, 9059928.089, new SpatialReference({ wkid:3857 }))
+            extent: new Extent(-16339179.166, 97839.396, -3541786.143, 9059928.089, new SpatialReference({ wkid: 3857 }))
         });
 
         var home = new HomeButton({
             map: map,
-            extent: new Extent(-16339179.166, 97839.396, -3541786.143, 9059928.089, new SpatialReference({ wkid:3857 })),
-            home: function() {
+            extent: new Extent(-16339179.166, 97839.396, -3541786.143, 9059928.089, new SpatialReference({ wkid: 3857 })),
+            home: function () {
                 $('#zoomToSelect').val('usa');
                 map.setExtent(this.extent);
             }
@@ -327,11 +327,12 @@ require([
             setCursorByID("mainDiv", "wait");
             map.setCursor("wait");
 
-            identifyTask = new IdentifyTask(allLayers[0].layers["recent"].url);
+            identifyTask = new IdentifyTask(allLayers[0].layers["Recent"].url);
 
             var deferredResult = identifyTask.execute(identifyParams);
 
             deferredResult.addCallback(function (response) {
+
                 if (response.length > 0) {
                     var feature = response[0].feature;
                     var attr;
@@ -339,7 +340,7 @@ require([
 
                     for (var i = 0; i < response.length; i++) {
                         if (response[i].layerId == 0) {
-                            //feature = response[i].feature;
+                            feature = response[i].feature;
                             attr = feature.attributes;
                         } else if (response[i].layerId == 1) {
                             attrStatus = response[i].feature.attributes;
@@ -359,29 +360,65 @@ require([
                     map.graphics.add(graphic);
 
                     var projmeta = '';
-                    if (attrStatus.SUPPMAPINFO == 'None') {
+                    if (attrStatus == undefined || attrStatus.SUPPMAPINFO == 'None') {
                         projmeta = " NONE";
                     } else {
                         projmeta = " <a target='_blank' href='" + attrStatus.SUPPMAPINFO + "'>click here</a>";
                     }
 
-                    if (response[0].layerName == "Recent Projects") {
-                        var template = new esri.InfoTemplate("Wetland Mapping Project",
-                            "<b>Project ID:</b> " + attrStatus.PROJECT_ID + "<br/>" +
-                            "<b>Image Year:</b> " + attrStatus.IMAGE_YR + "<br/>" +
-                            "<b>Project Metadata:</b>" + projmeta +
-                            "<br/><p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Project</a></p>");
-                    } else {
-                        var template = new esri.InfoTemplate("Wetland Mapping Project",
-                            "<b>Project ID:</b> " + attrStatus.PROJECT_ID + "<br/>" +
-                            "<br/><p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to Project</a></p>");
+                    //creating info windows, with toggles to show data in sites that are overlapping
+                    if (response.length > 1) { 
+                        var projID = "";
+                        var projGeom = [];
+                        //for loop runs through overlapping projects, create toggle to show data for each one
+                        for (i in response) {
+                            projGeom.push(response[i].feature.geometry);
+                            var projAttr = response[i].feature.attributes;
+                            projID += "<b>Project ID:</b> " + projAttr.PROJECT_ID + " " + 
+                                "<span onclick='showHideInnerProj(" + i + ")'><a id='openProjInfo_" + i + "' href='javascript:void(0)'> Show</a></span>" + "<br/>" +
+                                "<div id='innerProjDetail_" + i + "'style='display: none; background-color: rgba(0,0,0,0.04)'> <b>Acres:</b> " + Math.ceil(projAttr.ACRES) + "<br/>" +
+                                "<b>Layer Name:</b> " + response[i].layerName + "<br/>";
+
+                            if (response[i].layerName == "Recent") {
+                                projID += "<b>Image Year:</b> " + projAttr.IMAGE_YR + "<br/>" +
+                                    "<b>Project Metadata:</b>" + projmeta;
+                            }
+                            projID += "<br/><a id='zoomToProjLoop" + i + "' href='javascript:void(0)'>Zoom to Project</a></div>";
+                            //set up template for pop-up window with overlapping projects, link to individual popups in projID var
+                            var template = new esri.InfoTemplate("Wetland Mapping Project",
+                                projID + "<br/>");
+                        };
+                        feature.setInfoTemplate(template);
+                        map.infoWindow.setFeatures([feature]);
+                        map.infoWindow.show(evt.mapPoint);
+                        function zoomTo(event) {
+                            var index = event.currentTarget.id.replace(/\D/g,'');
+                            var convertedGeom = webMercatorUtils.webMercatorToGeographic(projGeom[index]);
+                            var featExtent = convertedGeom.getExtent();
+                            map.setExtent(featExtent, true);
+                        }
+                        for (i in response) {
+                            var projFeat = response[i].feature
+                            $("#zoomToProjLoop" + i).click(zoomTo);
+                        };
+                    } else {   // if only one layer clicked
+                        if (response[0].layerName == "Recent") {
+                            var template = new esri.InfoTemplate("Wetland Mapping Project",
+                                "<b>Project ID:</b> " + attrStatus.PROJECT_ID + "<br/>" +
+                                "<b>Acres:</b> " + Math.ceil(attrStatus.ACRES) + "<br/>" +
+                                "<b>Image Year:</b> " + attrStatus.IMAGE_YR + "<br/>" +
+                                "<b>Project Metadata:</b>" + projmeta + "<br/>" +
+                                "<p><a id='zoomToProj' href='javascript:void(0)'>Zoom to Project</a></p>");
+                        } else {
+                            var template = new esri.InfoTemplate("Wetland Mapping Project",
+                                "<b>Project ID:</b> " + attr.PROJECT_ID + "<br/>" + 
+                                "<b>Acres:</b> " + Math.ceil(attr.ACRES) + "<br/>" +
+                                "<p><a id='zoomToProj' href='javascript:void(0)'>Zoom to Project</a></p>");
+                        }
+                        feature.setInfoTemplate(template);
+                        map.infoWindow.setFeatures([feature]);
+                        map.infoWindow.show(evt.mapPoint);
                     }
-                    //ties the above defined InfoTemplate to the feature result returned from a click event
-
-                    feature.setInfoTemplate(template);
-
-                    map.infoWindow.setFeatures([feature]);
-                    map.infoWindow.show(evt.mapPoint);
 
                     var infoWindowClose = dojo.connect(map.infoWindow, "onHide", function (evt) {
                         map.graphics.clear();
@@ -391,20 +428,19 @@ require([
                     setCursorByID("mainDiv", "default");
                     map.setCursor("default");
 
-                    $("#infoWindowLink").click(function (event) {
+                    $("#zoomToProj").click(function (event) {
                         var convertedGeom = webMercatorUtils.webMercatorToGeographic(feature.geometry);
 
                         var featExtent = convertedGeom.getExtent();
 
                         map.setExtent(featExtent, true);
                     });
+
                 } else {
                     setCursorByID("mainDiv", "default");
                     map.setCursor("default");
                     map.infoWindow.hide();
                 }
-                //map.infoWindow.show(evt.mapPoint);
-
             });
         });
 
@@ -417,7 +453,7 @@ require([
             on_result: function (o) {
                 // what to do when a location is found
                 // o.result is geojson point feature of location with properties
-
+        
                 // zoom to location
                 require(["esri/geometry/Extent"], function (Extent) {
                     var noExtents = ["GNIS_MAJOR", "GNIS_MINOR", "ZIPCODE", "AREACODE"];
@@ -443,9 +479,9 @@ require([
                             );
                         });
                     }
-
+        
                 });
-
+        
             },
             "include_usgs_sw": true,
             "include_usgs_gw": true,
@@ -458,11 +494,11 @@ require([
             "include_huc8": true,
             "include_huc10": true,
             "include_huc12": true
-
+        
         }); */
 
         // Symbols
-        var sym = createPictureSymbol('../images/purple-pin.png', 0, 12, 13, 24); 
+        var sym = createPictureSymbol('../images/purple-pin.png', 0, 12, 13, 24);
 
         function createPictureSymbol(url, xOffset, yOffset, xWidth, yHeight) {
             return new PictureMarkerSymbol(
@@ -471,7 +507,7 @@ require([
                     'xoffset': xOffset, 'yoffset': yOffset, 'type': 'esriPMS',
                     'url': url,
                     'contentType': 'image/png',
-                    'width':xWidth, 'height': yHeight
+                    'width': xWidth, 'height': yHeight
                 });
         }
 
@@ -543,16 +579,22 @@ require([
                 $('#legendElement').css('height', 'initial');
             });
 
-        });
+            //attempting legend default open on larger screens... potentially some kind of onload function instead?
+            /*if ( $(window).width() > 1200) {
+                $('#legendCollapse').css('display', 'block'); //this works to open the div, but legend not getting filled in
+            } else {
+                $('#legendCollapse').css('display', 'none');
+            }; */
+        });        
 
         function geosearch() {
             setSearchExtent();
             var def = geocoder.find();
-            def.then(function (res){
+            def.then(function (res) {
                 geocodeResults(res);
             });
         }
-        
+
         var geocoder = new Geocoder({
             value: '',
             maxLocations: 25,
@@ -608,20 +650,20 @@ require([
             } else {
                 $(".geosearchWarning").show();//alert('Sorry, address or place not found.');  // TODO
             }
-        } 
+        }
 
         // Geosearch functions
-    on(dom.byId('btnGeosearch'),'click', geosearch);
+        on(dom.byId('btnGeosearch'), 'click', geosearch);
 
         // Optionally confine search to map extent
-    function setSearchExtent (){
-        geocoder.activeGeocoder.searchExtent = null;
-        /*if (dom.byId('chkExtent').checked === 1) {
-            geocoder.activeGeocoder.searchExtent = map.extent;
-        } else {
+        function setSearchExtent() {
             geocoder.activeGeocoder.searchExtent = null;
-        }*/
-    }
+            /*if (dom.byId('chkExtent').checked === 1) {
+                geocoder.activeGeocoder.searchExtent = map.extent;
+            } else {
+                geocoder.activeGeocoder.searchExtent = null;
+            }*/
+        }
 
 
         require([
@@ -731,45 +773,45 @@ require([
                     if ((layer.visible && wimOptions.moreinfo)) {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
-                                '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
-                                    '<i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName + 
-                                    '<span id="info' + camelize(layerName) + '" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>'+
-                                    '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
-                                '</button>' +
+                            '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
+                            '<i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName +
+                            '<span id="info' + camelize(layerName) + '" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>' +
+                            '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
+                            '</button>' +
                             '</div>');
-                    } else if ((!layer.visible && wimOptions.moreinfo)) { 
+                    } else if ((!layer.visible && wimOptions.moreinfo)) {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
-                                '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
-                                    '<i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName + 
-                                    '<span id="info' + camelize(layerName) + '" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>'+
-                                    '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
-                                '</button>' +
+                            '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
+                            '<i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName + ' Year' +
+                            '<span id="info' + camelize(layerName) + '" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>' +
+                            '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
+                            '</button>' +
                             '</div>');
-                    //recent and active layer
+                        //recent and active layer
                     } else if (layer.visible && wimOptions.moreinfo == undefined) {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
-                                '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
-                                    '<i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName + 
-                                    '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
-                                '</button>' +
+                            '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
+                            '<i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName + ' Projects' +
+                            '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
+                            '</button>' +
                             '</div>');
                     } else if ((!layer.visible && wimOptions.moreinfo == undefined)) {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
-                                '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
-                                    '<i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName + 
-                                    '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
-                                '</button>' +
+                            '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
+                            '<i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName +
+                            '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
+                            '</button>' +
                             '</div>');
-                    //check else
+                        //check else
                     } else {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
-                                '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
-                                    '<i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName + 
-                                '</button>' +
+                            '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
+                            '<i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName +
+                            '</button>' +
                             '</div>');
                     }
 
@@ -913,16 +955,28 @@ function hucLinkListener(HUCNumber) {
     });
 }
 
+//toggle project info in info Window for overlapping projects
+function showHideInnerProj(i) {
+    if ($("#innerProjDetail_" + i).css("display") == 'none') {
+        $("#innerProjDetail_" + i).css("display", 'block');
+        $("#openProjInfo_" + i).html("Hide");
+    } else {
+        $("#innerProjDetail_" + i).css("display", 'none');
+        $("#openProjInfo_" + i).html("Show");
+    };
+
+}
+
 //set extent for 'Zoom to region' panel
 function zoomToFunction() {
     var select = $('#zoomToSelect').val();
     var newExtent;
-    switch(select) {
+    switch (select) {
         case "usa":
             newExtent = new esri.geometry.Extent(-16339179.166, 97839.396, -3541786.143, 9059928.089, map.spatialReference);
             break;
         case "ak":
-            newExtent = new esri.geometry.Extent(-20039665.83, 6649626.025, -10625354.198, 13097026.174, map.spatialReference);
+            newExtent = new esri.geometry.Extent(-20039665.83, 6649626.025, -12798598.065, 12984229.813, map.spatialReference);
             break;
         case "hi":
             newExtent = new esri.geometry.Extent(-19616798.939, 1673053.675, -16468815.698, 3390135.078, map.spatialReference);
