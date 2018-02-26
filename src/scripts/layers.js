@@ -26,7 +26,7 @@ require([
             'includeInLayerList': true,
             'layers': {
                 'Active' : {
-                    'url': 'https://gis.usgs.gov/sciencebase2/rest/services/Catalog/5a8f0694e4b06990605c5378/MapServer',
+                    'url': 'https://gis.usgs.gov/sciencebase2/rest/services/Catalog/5a9441e3e4b069906068f9af/MapServer',
                     'visibleLayers': [0],
                     'options': {
                         'id': 'active',
@@ -43,7 +43,7 @@ require([
                     }
                 },
                 'Recent' : {
-                    'url': 'https://gis.usgs.gov/sciencebase2/rest/services/Catalog/5a8f0694e4b06990605c5378/MapServer',
+                    'url': 'https://gis.usgs.gov/sciencebase2/rest/services/Catalog/5a9441e3e4b069906068f9af/MapServer',
                     'visibleLayers': [1],
                     'options': {
                         'id': 'recent',

@@ -53,10 +53,6 @@ body {
     width: 100%;
 }
 
-#innerProjDetail {
-    display: none;
-    background-color: rgba(0,0,0,0.04);
-}
 
 @media (max-width: 767px) {
     #geosearchButtonText {

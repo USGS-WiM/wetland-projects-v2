@@ -340,7 +340,7 @@ require([
 
                     for (var i = 0; i < response.length; i++) {
                         if (response[i].layerId == 0) {
-                            //feature = response[i].feature;
+                            feature = response[i].feature;
                             attr = feature.attributes;
                         } else if (response[i].layerId == 1) {
                             attrStatus = response[i].feature.attributes;
@@ -360,30 +360,26 @@ require([
                     map.graphics.add(graphic);
 
                     var projmeta = '';
-                    if (attrStatus.SUPPMAPINFO == 'None') {
+                    if (attrStatus == undefined || attrStatus.SUPPMAPINFO == 'None') {
                         projmeta = " NONE";
                     } else {
                         projmeta = " <a target='_blank' href='" + attrStatus.SUPPMAPINFO + "'>click here</a>";
                     }
 
                     //creating info windows, with toggles to show data in sites that are overlapping
-                    //also had to specify cases where the active layer had overlapping polygons with the same project ID
-                    //and where they had the same project ID but in separate layers (active v. recent)
-                    //attempting to loop through response for "zoom to project" in project info 
-
-                    if (response.length > 1 && (response[0].feature.attributes.PROJECT_ID != response[1].feature.attributes.PROJECT_ID)) { //if there is more than one layer clicked, show list of projects
+                    if (response.length > 1) { 
                         var projID = "";
                         var projGeom = [];
                         //for loop runs through overlapping projects, create toggle to show data for each one
                         for (i in response) {
                             projGeom.push(response[i].feature.geometry);
                             var projAttr = response[i].feature.attributes;
-                            //var projFeat = response[i].feature;
-                            projID += "<b>Project ID:</b> " + projAttr.PROJECT_ID + " " +
+                            projID += "<b>Project ID:</b> " + projAttr.PROJECT_ID + " " + 
                                 "<span onclick='showHideInnerProj(" + i + ")'><a id='openProjInfo_" + i + "' href='javascript:void(0)'> Show</a></span>" + "<br/>" +
-                                "<div id='innerProjDetail_" + i + "'style='display: none; background-color: rgba(0,0,0,0.04)'> <b>Layer Name:</b> " + response[i].layerName + "<br/>";
+                                "<div id='innerProjDetail_" + i + "'style='display: none; background-color: rgba(0,0,0,0.04)'> <b>Acres:</b> " + Math.ceil(projAttr.ACRES) + "<br/>" +
+                                "<b>Layer Name:</b> " + response[i].layerName + "<br/>";
 
-                            if (response[i].layerName == "Recent Projects") {
+                            if (response[i].layerName == "Recent") {
                                 projID += "<b>Image Year:</b> " + projAttr.IMAGE_YR + "<br/>" +
                                     "<b>Project Metadata:</b>" + projmeta;
                             }
@@ -405,52 +401,18 @@ require([
                             var projFeat = response[i].feature
                             $("#zoomToProjLoop" + i).click(zoomTo);
                         };
-
-                        //else if for when project IDs are same, but in different layers 
-                    } else if (response.length > 1 && response[0].feature.attributes.PROJECT_ID == response[1].feature.attributes.PROJECT_ID && response[0].layerName != response[1].layerName) {
-                        var projID = "";
-                        var projGeom = [];
-                        //for loop runs through overlapping projects, create toggle to show data for each one
-                        for (i in response) {
-                            projGeom.push(response[i].feature.geometry);
-                            var projAttr = response[i].feature.attributes;
-                            //var projFeat = response[i].feature;
-                            projID += "<b>Project ID:</b> " + projAttr.PROJECT_ID + " " +
-                                "<span onclick='showHideInnerProj(" + i + ")'><a id='openProjInfo_" + i + "' href='javascript:void(0)'> Show</a></span>" + "<br/>" +
-                                "<div id='innerProjDetail_" + i + "'style='display: none; background-color: rgba(0,0,0,0.04)'> <b>Layer Name:</b> " + response[i].layerName + "<br/>";
-
-                            if (response[i].layerName == "Recent Projects") {
-                                projID += "<b>Image Year:</b> " + projAttr.IMAGE_YR + "<br/>" +
-                                    "<b>Project Metadata:</b>" + projmeta;
-                            }
-                            projID += "<br/><a id='zoomToProjLoop" + i + "' href='javascript:void(0)'>Zoom to Project</a></div>";
-                            //set up template for pop-up window with overlapping projects, link to individual popups in projID var
-                            var template = new esri.InfoTemplate("Wetland Mapping Project",
-                                projID + "<br/>");
-                        };
-                        feature.setInfoTemplate(template);
-                        map.infoWindow.setFeatures([feature]);
-                        map.infoWindow.show(evt.mapPoint);
-                        function zoomTo(event) {
-                            var index = event.currentTarget.id.replace(/\D/g,'');
-                            var convertedGeom = webMercatorUtils.webMercatorToGeographic(projGeom[index]);
-                            var featExtent = convertedGeom.getExtent();
-                            map.setExtent(featExtent, true);
-                        }
-                        for (i in response) {
-                            var projFeat = response[i].feature
-                            $("#zoomToProjLoop" + i).click(zoomTo);
-                        };
-                    } else {   // if only one layer clicked, or overlapping features have same Project ID and same layer
-                        if (response[0].layerName == "Recent Projects") {
+                    } else {   // if only one layer clicked
+                        if (response[0].layerName == "Recent") {
                             var template = new esri.InfoTemplate("Wetland Mapping Project",
                                 "<b>Project ID:</b> " + attrStatus.PROJECT_ID + "<br/>" +
+                                "<b>Acres:</b> " + Math.ceil(attrStatus.ACRES) + "<br/>" +
                                 "<b>Image Year:</b> " + attrStatus.IMAGE_YR + "<br/>" +
                                 "<b>Project Metadata:</b>" + projmeta + "<br/>" +
                                 "<p><a id='zoomToProj' href='javascript:void(0)'>Zoom to Project</a></p>");
                         } else {
                             var template = new esri.InfoTemplate("Wetland Mapping Project",
-                                "<b>Project ID:</b> " + attrStatus.PROJECT_ID + "<br/>" +
+                                "<b>Project ID:</b> " + attr.PROJECT_ID + "<br/>" + 
+                                "<b>Acres:</b> " + Math.ceil(attr.ACRES) + "<br/>" +
                                 "<p><a id='zoomToProj' href='javascript:void(0)'>Zoom to Project</a></p>");
                         }
                         feature.setInfoTemplate(template);
@@ -598,7 +560,7 @@ require([
                 if (legendDiv.innerHTML.length == 0) {
                     var legend = new Legend({
                         map: map,
-                        layerInfos: legendLayers //may be able to change legend titles here
+                        layerInfos: legendLayers
                     }, "legendDiv");
                     legend.startup();
 
@@ -613,22 +575,17 @@ require([
                 }
             });
 
-            //attempting legend default open on larger screens... potentially some kind of onload function instead?
-            /*if ( $(window).width() > 1200) {
-                var legend = new Legend({
-                    map: map,
-                    layerInfos: legendLayers //may be able to change legend titles here
-                }, "legendDiv");
-                legend.startup();
-
-                $("#legendDiv").niceScroll();
-            }; */
-
             $('#legendCollapse').on('hide.bs.collapse', function () {
                 $('#legendElement').css('height', 'initial');
             });
 
-        });
+            //attempting legend default open on larger screens... potentially some kind of onload function instead?
+            /*if ( $(window).width() > 1200) {
+                $('#legendCollapse').css('display', 'block'); //this works to open the div, but legend not getting filled in
+            } else {
+                $('#legendCollapse').css('display', 'none');
+            }; */
+        });        
 
         function geosearch() {
             setSearchExtent();
