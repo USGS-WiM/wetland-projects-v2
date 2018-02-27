@@ -556,6 +556,7 @@ require([
             maxLegendDivHeight = (maxLegendHeight) - parseInt($('#legendHeading').css("height").replace('px', ''));
             $('#legendDiv').css('max-height', maxLegendDivHeight);
 
+            
             $('#legendCollapse').on('shown.bs.collapse', function () {
                 if (legendDiv.innerHTML.length == 0) {
                     var legend = new Legend({
@@ -579,12 +580,7 @@ require([
                 $('#legendElement').css('height', 'initial');
             });
 
-            //attempting legend default open on larger screens... potentially some kind of onload function instead?
-            /*if ( $(window).width() > 1200) {
-                $('#legendCollapse').css('display', 'block'); //this works to open the div, but legend not getting filled in
-            } else {
-                $('#legendCollapse').css('display', 'none');
-            }; */
+            
         });        
 
         function geosearch() {
@@ -928,7 +924,18 @@ require([
                     }
                 }
                 //deleted commented out code
-
+                //attempting legend default open on larger screens... potentially some kind of onload function instead?
+                if ( $(window).width() > 1300) {
+                    var legend = new Legend({
+                        map: map,
+                        layerInfos: legendLayers
+                    }, "legendDiv");
+                    legend.startup();
+                    $('#legendButton').click();
+    
+                    $("#legendDiv").niceScroll();
+                }
+                
             });//end of require statement containing legend building code
 
     });
