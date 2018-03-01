@@ -349,6 +349,8 @@ require([
                     }
 
                     // Code for adding wetland highlight
+                    //this is what can be used to change the highlight.. change the feature.geometry to match the 
+                    //item in the for loop, may have to do something similar to the zoom to project
                     var symbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
                         new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
                             new dojo.Color([255, 255, 0]), 2), new dojo.Color([98, 194, 204, 0])
@@ -370,13 +372,15 @@ require([
                     if (response.length > 1) { 
                         var projID = "";
                         var projGeom = [];
+                        var projFeat = [];
                         //for loop runs through overlapping projects, create toggle to show data for each one
                         for (i in response) {
                             projGeom.push(response[i].feature.geometry);
+                            projFeat.push(response[i].feature);
                             var projAttr = response[i].feature.attributes;
                             projID += "<b>Project ID:</b> " + projAttr.PROJECT_ID + " " + 
                                 "<span onclick='showHideInnerProj(" + i + ")'><a id='openProjInfo_" + i + "' href='javascript:void(0)'> Show</a></span>" + "<br/>" +
-                                "<div id='innerProjDetail_" + i + "'style='display: none; background-color: rgba(0,0,0,0.04)'> <b>Acres:</b> " + Math.ceil(projAttr.ACRES) + "<br/>" +
+                                "<div id='innerProjDetail_" + i + "'style='display: none; background-color: rgba(0,0,0,0.04)'> <b>Acres:</b> " + addCommas(Math.ceil(projAttr.ACRES)) + "<br/>" +
                                 "<b>Layer Name:</b> " + response[i].layerName + "<br/>";
 
                             if (response[i].layerName == "Recent") {
@@ -386,7 +390,7 @@ require([
                             projID += "<br/><a id='zoomToProjLoop" + i + "' href='javascript:void(0)'>Zoom to Project</a></div>";
                             //set up template for pop-up window with overlapping projects, link to individual popups in projID var
                             var template = new esri.InfoTemplate("Wetland Mapping Project",
-                                projID + "<br/>");
+                                projID + "<br/>");                         
                         };
                         feature.setInfoTemplate(template);
                         map.infoWindow.setFeatures([feature]);
@@ -401,18 +405,23 @@ require([
                             var projFeat = response[i].feature
                             $("#zoomToProjLoop" + i).click(zoomTo);
                         };
+                        projGeom.spatialReference = map.spatialReference;
+                        var graphic = projFeat;
+                        graphic.setSymbol(symbol);
+
+                        map.graphics.add(graphic);
                     } else {   // if only one layer clicked
                         if (response[0].layerName == "Recent") {
                             var template = new esri.InfoTemplate("Wetland Mapping Project",
                                 "<b>Project ID:</b> " + attrStatus.PROJECT_ID + "<br/>" +
-                                "<b>Acres:</b> " + Math.ceil(attrStatus.ACRES) + "<br/>" +
+                                "<b>Acres:</b> " + addCommas(Math.ceil(attrStatus.ACRES)) + "<br/>" +
                                 "<b>Image Year:</b> " + attrStatus.IMAGE_YR + "<br/>" +
                                 "<b>Project Metadata:</b>" + projmeta + "<br/>" +
                                 "<p><a id='zoomToProj' href='javascript:void(0)'>Zoom to Project</a></p>");
                         } else {
                             var template = new esri.InfoTemplate("Wetland Mapping Project",
                                 "<b>Project ID:</b> " + attr.PROJECT_ID + "<br/>" + 
-                                "<b>Acres:</b> " + Math.ceil(attr.ACRES) + "<br/>" +
+                                "<b>Acres:</b> " + addCommas(Math.ceil(attr.ACRES)) + "<br/>" +
                                 "<p><a id='zoomToProj' href='javascript:void(0)'>Zoom to Project</a></p>");
                         }
                         feature.setInfoTemplate(template);
