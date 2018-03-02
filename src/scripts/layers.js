@@ -25,11 +25,11 @@ require([
             'showGroupHeading': false,
             'includeInLayerList': true,
             'layers': {
-                'Active' : {
+                'Recent' : {
                     'url': 'https://gis.usgs.gov/sciencebase2/rest/services/Catalog/5a9476d6e4b069906068fc3b/MapServer',
-                    'visibleLayers': [0],
+                    'visibleLayers': [1],
                     'options': {
-                        'id': 'active',
+                        'id': 'recent',
                         'opacity': 0.75,
                         'visible': true
                     },
@@ -42,11 +42,11 @@ require([
                         'includeLegend' : true,
                     }
                 },
-                'Recent' : {
+                'Active' : {
                     'url': 'https://gis.usgs.gov/sciencebase2/rest/services/Catalog/5a9476d6e4b069906068fc3b/MapServer',
-                    'visibleLayers': [1],
+                    'visibleLayers': [0],
                     'options': {
-                        'id': 'recent',
+                        'id': 'active',
                         'opacity': 0.75,
                         'visible': true
                     },

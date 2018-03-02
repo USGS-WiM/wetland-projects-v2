@@ -93,40 +93,7 @@ require([
 
         esriConfig.defaults.geometryService = new GeometryService("https://fwsmapper.wim.usgs.gov/arcgis/rest/services/Utilities/Geometry/GeometryServer");
 
-        /*urlUtils.addProxyRule({
-                                proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                                urlPrefix: "http://52.70.106.103/arcgis/rest/services/SecurePrinting/"
-                            });
-        
-        urlUtils.addProxyRule({
-                                proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                                urlPrefix: "http://52.70.106.103/arcgis/rest/services/Wetlands"
-                            });
-    
-        urlUtils.addProxyRule({
-                                proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                                urlPrefix: "http://52.70.106.103/arcgis/rest/services/Wetlands_Raster"
-                            });
-    
-        urlUtils.addProxyRule({
-                                proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                                urlPrefix: "http://52.70.106.103/arcgis/rest/services/Wetlands_Status"
-                            });
-    
-        urlUtils.addProxyRule({
-                                proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                                urlPrefix: "http://52.70.106.103/arcgis/rest/services/Riparian"
-                            });
-    
-        urlUtils.addProxyRule({
-                                proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                                urlPrefix: "http://52.70.106.103/arcgis/rest/services/Data_Source"
-                            });
-    
-        urlUtils.addProxyRule({
-                                proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                                urlPrefix: "http://52.70.106.103/arcgis/rest/services/Historic_Wetlands"
-                            });*/
+        //deleted commented out addProxyRules
 
         map = new Map('mapDiv', {
             basemap: 'streets',
@@ -149,9 +116,6 @@ require([
             scale: 4514,
         }, "locateButton");
         locate.startup();
-
-        //var utmCoords = $('<tr class="esriMeasurementTableRow" id="utmCoords"><td><span>UTM17</span></td><td class="esriMeasurementTableCell"> <span id="utmX" dir="ltr">UTM X</span></td> <td class="esriMeasurementTableCell"> <span id="utmY" dir="ltr">UTM Y</span></td></tr>');
-        //$('.esriMeasurementResultTable').append(utmCoords);
 
         //following block forces map size to override problems with default behavior
         $(window).resize(function () {
@@ -181,11 +145,6 @@ require([
             printMap();
         });
 
-        /*aoiSymbol = new PictureMarkerSymbol("../images/grn-pushpin.png", 45, 45);
-    
-        renderer.addValue({
-            symbol: aoiSymbol
-        });*/
 
         //displays map scale on map load
         on(map, "load", function () {
@@ -194,8 +153,6 @@ require([
             var initMapCenter = webMercatorUtils.webMercatorToGeographic(map.extent.getCenter());
             $('#latitude').html(initMapCenter.y.toFixed(3));
             $('#longitude').html(initMapCenter.x.toFixed(3));
-            //map.setBasemap("topo");
-            //map.setBasemap("hybrid");
         });
         //displays map scale on scale change (i.e. zoom level)
         on(map, "zoom-end", function () {
@@ -303,11 +260,6 @@ require([
         //map click handler
         on(map, "click", function (evt) {
 
-            /*if (aoiClicked == true) {
-                aoiClicked = false;
-                return;
-            }
-    */
             map.graphics.clear();
             //map.infoWindow.hide();s
 
@@ -348,9 +300,7 @@ require([
 
                     }
 
-                    // Code for adding wetland highlight
-                    //this is what can be used to change the highlight.. change the feature.geometry to match the 
-                    //item in the for loop, may have to do something similar to the zoom to project
+                    // Code for adding wetland highlight, use in for loop if we want 'Show' to highlight overlapping projects in turn
                     var symbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
                         new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
                             new dojo.Color([255, 255, 0]), 2), new dojo.Color([98, 194, 204, 0])
@@ -388,7 +338,7 @@ require([
                                     "<b>Project Metadata:</b>" + projmeta;
                             }
                             projID += "<br/><a id='zoomToProjLoop" + i + "' href='javascript:void(0)'>Zoom to Project</a></div>";
-                            //set up template for pop-up window with overlapping projects, link to individual popups in projID var
+                            //set up template for pop-up window with overlapping projects, show/hide toggle with project info
                             var template = new esri.InfoTemplate("Wetland Mapping Project",
                                 projID + "<br/>");                         
                         };
@@ -453,58 +403,7 @@ require([
             });
         });
 
-        //on(search,'search-results', function(e) {
-        //$('#geosearchModal').modal('hide');
-        //});
-
-        // create search_api widget in element "geosearch"
-        /*search_api.create("geosearch", {
-            on_result: function (o) {
-                // what to do when a location is found
-                // o.result is geojson point feature of location with properties
-        
-                // zoom to location
-                require(["esri/geometry/Extent"], function (Extent) {
-                    var noExtents = ["GNIS_MAJOR", "GNIS_MINOR", "ZIPCODE", "AREACODE"];
-                    var noExtentCheck = noExtents.indexOf(o.result.properties["Source"])
-                    $("#geosearchModal").modal('hide');
-                    if (noExtentCheck == -1) {
-                        map.setExtent(
-                            new esri.geometry.Extent({
-                                xmin: o.result.properties.LonMin,
-                                ymin: o.result.properties.LatMin,
-                                xmax: o.result.properties.LonMax,
-                                ymax: o.result.properties.LatMax,
-                                spatialReference: { "wkid": 4326 }
-                            }),
-                            true
-                        );
-                    } else {
-                        //map.setCenter();
-                        require(["esri/geometry/Point"], function (Point) {
-                            map.centerAndZoom(
-                                new Point(o.result.properties.Lon, o.result.properties.Lat),
-                                12
-                            );
-                        });
-                    }
-        
-                });
-        
-            },
-            "include_usgs_sw": true,
-            "include_usgs_gw": true,
-            "include_usgs_sp": true,
-            "include_usgs_at": true,
-            "include_usgs_ot": true,
-            "include_huc2": true,
-            "include_huc4": true,
-            "include_huc6": true,
-            "include_huc8": true,
-            "include_huc10": true,
-            "include_huc12": true
-        
-        }); */
+        //deleted commented out code
 
         // Symbols
         var sym = createPictureSymbol('../images/purple-pin.png', 0, 12, 13, 24);
@@ -576,12 +475,6 @@ require([
 
                     $("#legendDiv").niceScroll();
 
-                    /*legend.addCallback(function(response) { 
-                        maxLegendHeight =  ($('#mapDiv').height()) * 0.90;
-                        $('#legendElement').css('max-height', maxLegendHeight);
-                        maxLegendDivHeight = ($('#legendElement').height()) - parseInt($('#legendHeading').css("height").replace('px',''));
-                        $('#legendDiv').css('max-height', maxLegendDivHeight);
-                    });*/
                 }
             });
 
@@ -663,11 +556,6 @@ require([
         // Optionally confine search to map extent
         function setSearchExtent() {
             geocoder.activeGeocoder.searchExtent = null;
-            /*if (dom.byId('chkExtent').checked === 1) {
-                geocoder.activeGeocoder.searchExtent = map.extent;
-            } else {
-                geocoder.activeGeocoder.searchExtent = null;
-            }*/
         }
 
 
@@ -741,16 +629,8 @@ require([
                         if (layerDetails.visibleLayers) {
                             layer.setVisibleLayers(layerDetails.visibleLayers);
                         }
-                        /*if (layerDetails.wimOptions && layerDetails.wimOptions.layerDefinitions) {
-                            var layerDefs = [];
-                            $.each(layerDetails.wimOptions.layerDefinitions, function (index, def) {
-                                layerDefs[index] = def;
-                            });
-                            layer.setLayerDefinitions(layerDefs);
-                        }
-                        */
                         legendLayers.unshift({ layer: layer, title: layerName });
-
+                        
                         //map.addLayer(layer);
                         addLayerToMap(group.groupHeading, group.showGroupHeading, layer, layerName, layerDetails.options, layerDetails.wimOptions);
                         //addMapServerLegend(layerName, layerDetails);
@@ -761,7 +641,7 @@ require([
 
                     //add layer to map
                     //layer.addTo(map);
-                    map.addLayer(layer);
+                    map.addLayer(layer);                
 
 
 
@@ -933,7 +813,7 @@ require([
                     }
                 }
                 //deleted commented out code
-                //attempting legend default open on larger screens... potentially some kind of onload function instead?
+                //legend default open on larger screens
                 if ( $(window).width() > 1300) {
                     var legend = new Legend({
                         map: map,
@@ -944,7 +824,7 @@ require([
     
                     $("#legendDiv").niceScroll();
                 }
-                
+
             });//end of require statement containing legend building code
 
     });
@@ -1009,13 +889,5 @@ function zoomToFunction() {
 
 
 $(document).ready(function () {
-    //7 lines below are handler for the legend buttons. to be removed if we stick with the in-map legend toggle
-    //$('#legendButtonNavBar, #legendButtonSidebar').on('click', function () {
-    //    $('#legend').toggle();
-    //    //return false;
-    //});
-    //$('#legendClose').on('click', function () {
-    //    $('#legend').hide();
-    //});
 
 });
