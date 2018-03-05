@@ -41,6 +41,7 @@ To push tags to remote origin: `git push origin --tags`
 
 * **[Nicholas Estes](https://www.usgs.gov/staff-profiles/nicholas-j-estes)**  - *Lead Developer* - [USGS Web Informatics & Mapping](https://wim.usgs.gov/)
 * **[Lauren Privette](https://www.usgs.gov/staff-profiles/lauren-privette)**  - *Developer* - [USGS Web Informatics & Mapping](https://wim.usgs.gov/)
+* **Katrin Jacobsen** - *Developer* - [USGS Web Informatics & Mapping](https://wim.usgs.gov/)
 
 See also the list of [contributors](https://github.com/USGS-WiM/wetland-projects-v2/contributors) who participated in this project.
 
