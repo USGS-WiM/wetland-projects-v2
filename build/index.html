@@ -5,6 +5,7 @@
     <title>Projects Mapper</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="icon" type="image/x-icon" href="https://wim.usgs.gov/favicon-wim.png">
 
     <link rel="stylesheet" href="styles/vendor.css">
@@ -24,6 +25,21 @@
 
 
     <script src="scripts/combined.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-61219868-33"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-61219868-33');
+    </script>
+
+    <!--Federated Analytics -->
+    <!-- We participate in the US government's analytics program. See the data at analytics.usa.gov. -->
+    <script async type="text/javascript" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=DOI" id="_fed_an_ua_tag"></script>
+
 
 </head>
 
@@ -207,7 +223,7 @@
                                 universities and private organizations have contributed wetlands data to the wetlands geospatial
                                 data layer maintained by the U.S. Fish and Wildlife Service.
                                 <br/> The Projects mapper and the Wetlands Mapper are updated simultaneously on a biannual basis.
-                                </p>
+                            </p>
                             <p>For general questions about the projects displayed on the Projects Mapper please contact:
                                 <a target="_blank" href="mailto:Wetlands_Team@fws.gov">Wetlands_Team@fws.gov</a>
                             </p>
@@ -261,6 +277,9 @@
                     </div>
                     <div id="basemapsPanel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="basemapsHeader">
                         <div class="panel-body collapse in">
+                            <button id="btnTopo" class="btn btn-default basemapBtn equalize">
+                                <img class="basemapThumb" alt="" src="images/topo.jpg">
+                                <br class="basemapThumb">Topo</button>
                             <button id="btnStreets" class="btn btn-default basemapBtn equalize">
                                 <img class="basemapThumb" alt="" src="images/streets.jpg">
                                 <br class="basemapThumb">Streets</button>
@@ -270,9 +289,6 @@
                             <button id="btnHybrid" class="btn btn-default basemapBtn equalize">
                                 <img class="basemapThumb" alt="" src="images/imagery_labels.jpg">
                                 <br class="basemapThumb">Hybrid</button>
-                            <button id="btnTopo" class="btn btn-default basemapBtn equalize">
-                                <img class="basemapThumb" alt="" src="images/topo.jpg">
-                                <br class="basemapThumb">Topo</button>
                             <button id="btnTerrain" class="btn btn-default basemapBtn equalize">
                                 <img class="basemapThumb" alt="" src="images/terrain.jpg">
                                 <br class="basemapThumb">Terrain</button>
@@ -351,7 +367,9 @@
                             </h4>
                         </div>
                         <div id="legendCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                            <b><h5 id="legendSubTitle" >Mapping Projects</h5></b>
+                            <b>
+                                <h5 id="legendSubTitle">Mapping Projects</h5>
+                            </b>
                             <div id="legendDiv" class="panel-body"></div>
                         </div>
                     </div>
