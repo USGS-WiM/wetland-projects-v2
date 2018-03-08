@@ -96,7 +96,7 @@ require([
         //deleted commented out addProxyRules
 
         map = new Map('mapDiv', {
-            basemap: 'streets',
+            basemap: 'topo',
             extent: new Extent(-16339179.166, 97839.396, -3541786.143, 9059928.089, new SpatialReference({ wkid: 3857 }))
         });
 
@@ -180,6 +180,11 @@ require([
         var usgsTopo = new ArcGISTiledMapServiceLayer('https://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer');
         var nationalMapBasemap = new ArcGISTiledMapServiceLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer');
         //on clicks to swap basemap. map.removeLayer is required for nat'l map b/c it is not technically a basemap, but a tiled layer.
+        on(dom.byId('btnNatlMap'), 'click', function () {
+            map.addLayer(nationalMapBasemap, 1);
+            map.removeLayer(usgsTopo);
+        });
+
         on(dom.byId('btnStreets'), 'click', function () {
             map.setBasemap('streets');
             map.removeLayer(nationalMapBasemap);
@@ -221,11 +226,6 @@ require([
             map.removeLayer(usgsTopo);
         });
 
-        on(dom.byId('btnNatlMap'), 'click', function () {
-            map.addLayer(nationalMapBasemap, 1);
-            map.removeLayer(usgsTopo);
-        });
-
         on(dom.byId('btnUsgsTopo'), 'click', function () {
             map.addLayer(usgsTopo, 1);
             map.removeLayer(nationalMapBasemap);
@@ -264,7 +264,13 @@ require([
             //map.infoWindow.hide();s
 
             //alert("scale: " + map.getScale() + ", level: " + map.getLevel());
-
+            var visLayers = []
+            if (map.getLayer("active").visible == true) {
+                visLayers.push(0);
+            }
+            if (map.getLayer("recent").visible == true) {
+                visLayers.push(1);
+            }
             identifyParams.geometry = evt.mapPoint;
             identifyParams.mapExtent = map.extent;
             identifyParams.layerOption = IdentifyParameters.LAYER_OPTION_ALL;
@@ -272,7 +278,7 @@ require([
             identifyParams.tolerance = 0;
             identifyParams.width = map.width;
             identifyParams.height = map.height;
-            identifyParams.layerIds = [0, 1];
+            identifyParams.layerIds = visLayers;
 
             //if (map.getLevel() >= 12 && $("#huc-download-alert")[0].scrollHeight == 0) {
             //the deferred variable is set to the parameters defined above and will be used later to build the contents of the infoWindow.
@@ -284,7 +290,6 @@ require([
             var deferredResult = identifyTask.execute(identifyParams);
 
             deferredResult.addCallback(function (response) {
-
                 if (response.length > 0) {
                     var feature = response[0].feature;
                     var attr;
@@ -673,7 +678,7 @@ require([
                             '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
                             '</button>' +
                             '</div>');
-                        //recent and active layer
+                    //recent and active layer
                     } else if (layer.visible && wimOptions.moreinfo == undefined) {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
@@ -690,7 +695,7 @@ require([
                             '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
                             '</button>' +
                             '</div>');
-                        //check else
+                    //check else
                     } else {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
