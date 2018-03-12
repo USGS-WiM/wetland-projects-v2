@@ -144,12 +144,12 @@ a:focus {
   color: #6F758E;
   background-color: #ECEEF3;
 }
-#sidebar .wim-sidebar-panel .panel-heading h4 a:after {
+/* #sidebar .wim-sidebar-panel .panel-heading h4 a:after {
   padding: 0 0 0 10px;
   content: '\f3d3';
   font-family: 'ionicons';
   color: #6F758E;
-}
+} */
 #sidebar .wim-sidebar-panel .panel-heading h4 a:hover {
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.5);
