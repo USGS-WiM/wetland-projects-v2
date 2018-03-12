@@ -290,7 +290,7 @@ require([
             var deferredResult = identifyTask.execute(identifyParams);
 
             deferredResult.addCallback(function (response) {
-                if (response.length > 0) {
+                if (response.length > 0 && visLayers.length > 0) {
                     var feature = response[0].feature;
                     var attr;
                     var attrStatus;
@@ -642,6 +642,7 @@ require([
                     });
                 });
 
+                
                 function addLayerToMap(groupHeading, showGroupHeading, layer, layerName, options, wimOptions) {
 
                     //add layer to map
@@ -660,26 +661,35 @@ require([
                     //create layer toggle
                     //var button = $('<div align="left" style="cursor: pointer;padding:5px;"><span class="glyphspan glyphicon glyphicon-check"></span>&nbsp;&nbsp;' + layerName + '</div>');
                     //image layer
-                    if ((layer.visible && wimOptions.moreinfo)) {
+                    var button = $(
+                        '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
+                        '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
+                        '<i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName +
+                        '<span id="info' + camelize(layerName) + '" onclick="openAboutModal()" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>' +
+                        '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
+                        '</button>' +
+                        '</div>');
+
+                    /*if ((layer.visible && wimOptions.moreinfo == undefined)) {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
                             '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
                             '<i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName +
-                            '<span id="info' + camelize(layerName) + '" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>' +
+                            '<span id="info' + camelize(layerName) + '" onclick="openAboutModal()" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>' +
                             '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
                             '</button>' +
                             '</div>');
-                    } else if ((!layer.visible && wimOptions.moreinfo)) {
+                    } else if ((!layer.visible && wimOptions.moreinfo == undefined)) {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
                             '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
                             '<i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName + ' Year' +
-                            '<span id="info' + camelize(layerName) + '" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>' +
+                            '<span id="info' + camelize(layerName) + '" onclick="openAboutModal()" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>' +
                             '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
                             '</button>' +
                             '</div>');
                     //recent and active layer
-                    } else if (layer.visible && wimOptions.moreinfo == undefined) {
+                    /*} else if (layer.visible && wimOptions.moreinfo == undefined) {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
                             '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
@@ -694,16 +704,16 @@ require([
                             '<i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName +
                             '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
                             '</button>' +
-                            '</div>');
+                            '</div>');*/
                     //check else
-                    } else {
+                    /*} else {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
                             '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
                             '<i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName +
                             '</button>' +
                             '</div>');
-                    }
+                    }*/
 
 
                     //click listener for regular
@@ -834,7 +844,7 @@ require([
 
     });
 
-function stateSelected() {
+/*function stateSelected() {
     var select = $('#stateSelect')[0];
     if (select.selectedIndex > 0) {
         var selectedVal = select.options[select.selectedIndex].value;
@@ -843,7 +853,7 @@ function stateSelected() {
     } else {
         $('#downloadState').html("");
     }
-}
+}*/
 
 $(".close-alert").click(function () {
     $(this).parent().slideUp(250);
@@ -866,6 +876,13 @@ function showHideInnerProj(i) {
         $("#openProjInfo_" + i).html("Show");
     };
 
+}
+
+/*$('#openAbout').click(function() {
+    $('#aboutModal').modal('show');
+})*/
+function openAboutModal() {
+    $('#aboutModal').modal('show');
 }
 
 //set extent for 'Zoom to region' panel

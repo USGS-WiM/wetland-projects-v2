@@ -26,7 +26,7 @@ require([
             'includeInLayerList': true,
             'layers': {
                 'Recent' : {
-                    'url': 'https://gis.usgs.gov/sciencebase2/rest/services/Catalog/5a9476d6e4b069906068fc3b/MapServer',
+                    'url': 'https://gis.usgs.gov/sciencebase2/rest/services/Catalog/5aa6893de4b0b1c392ed65a3/MapServer',
                     'visibleLayers': [1],
                     'options': {
                         'id': 'recent',
@@ -43,7 +43,7 @@ require([
                     }
                 },
                 'Active' : {
-                    'url': 'https://gis.usgs.gov/sciencebase2/rest/services/Catalog/5a9476d6e4b069906068fc3b/MapServer',
+                    'url': 'https://gis.usgs.gov/sciencebase2/rest/services/Catalog/5aa6893de4b0b1c392ed65a3/MapServer',
                     'visibleLayers': [0],
                     'options': {
                         'id': 'active',
@@ -72,7 +72,6 @@ require([
                         'layerType': 'agisDynamic',
                         'includeInLayerList': true,
                         'hasOpacitySlider': true,
-                        'moreinfo': 'http://www.fws.gov/wetlands/Other/Riparian-Product-Summary.html',
                         'includeLegend' : true
                     }
                 },
