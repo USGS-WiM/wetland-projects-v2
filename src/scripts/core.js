@@ -661,16 +661,8 @@ require([
                     //create layer toggle
                     //var button = $('<div align="left" style="cursor: pointer;padding:5px;"><span class="glyphspan glyphicon glyphicon-check"></span>&nbsp;&nbsp;' + layerName + '</div>');
                     //image layer
-                    var button = $(
-                        '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
-                        '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
-                        '<i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName +
-                        '<span id="info' + camelize(layerName) + '" onclick="openAboutModal()" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>' +
-                        '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
-                        '</button>' +
-                        '</div>');
 
-                    /*if ((layer.visible && wimOptions.moreinfo == undefined)) {
+                    if ((layer.visible && wimOptions.moreinfo == undefined)) {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
                             '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
@@ -706,14 +698,14 @@ require([
                             '</button>' +
                             '</div>');*/
                     //check else
-                    /*} else {
+                    } else {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
                             '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
                             '<i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName +
                             '</button>' +
                             '</div>');
-                    }*/
+                    }
 
 
                     //click listener for regular
