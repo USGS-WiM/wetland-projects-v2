@@ -40,6 +40,20 @@
     <!-- We participate in the US government's analytics program. See the data at analytics.usa.gov. -->
     <script async type="text/javascript" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=DOI" id="_fed_an_ua_tag"></script>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-61219868-33"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-61219868-33');
+    </script>
+
+    <!--Federated Analytics -->
+    <!-- We participate in the US government's analytics program. See the data at analytics.usa.gov. -->
+    <script async type="text/javascript" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=DOI" id="_fed_an_ua_tag"></script>
+
 
 </head>
 
@@ -215,6 +229,8 @@
                                 the Projects Mapper for two years after data submission. Users looking for the data associated
                                 with recent project additions should refer to the
                                 <a target="_blank" href="https://www.fws.gov/wetlands/data/Mapper.html">Wetlands Mapper</a>.</p>
+                            <p>The Image Year layer identifies the decade of imagery that was used to collect the wetlands data
+                                that is currently posted on the Wetlands Mapper.</p>
                             <p>Users can navigate the map using pan and zoom functions and can click on projects to obtain project
                                 id and metadata information if available. </p>
                             <p>
@@ -270,7 +286,7 @@
                 <div class="panel panel-default wim-sidebar-panel">
                     <div class="panel-heading" id="basemapsHeader">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" href="#basemapsPanel" aria-expanded="false" aria-controls="basemapsPanel">
+                            <a class="accordion-toggle collapsed" data-toggle="collapse" href="#basemapsPanel" aria-expanded="false" aria-controls="basemapsPanel">
                                 Basemaps
                             </a>
                         </h4>
@@ -314,7 +330,7 @@
                 <div class="panel panel-default wim-sidebar-panel">
                     <div class="panel-heading" id="layersPanelHeader">
                         <h4 class="panel-title">
-                            <a class="collapsed" data-toggle="collapse" href="#layersPanel" aria-expanded="true" aria-controls="layersPanel">
+                            <a class="accordion-toggle" data-toggle="collapse" href="#layersPanel" aria-expanded="true" aria-controls="layersPanel">
                                 Map Layers
                             </a>
                         </h4>
@@ -326,7 +342,7 @@
                 <div class="panel panel-default wim-sidebar-panel">
                     <div class="panel-heading" id="zoomToRegionHeader">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" href="#zoomToRegion" aria-expanded="false" aria-controls="zoomToRegion">
+                            <a class="accordion-toggle" data-toggle="collapse" href="#zoomToRegion" aria-expanded="true" aria-controls="zoomToRegion">
                                 Zoom to Region
                             </a>
                         </h4>
