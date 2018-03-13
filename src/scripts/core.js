@@ -621,7 +621,7 @@ require([
 
                 //create global layers lookup
                 var mapLayers = [];
-
+            
                 $.each(allLayers, function (index, group) {
                     console.log('processing: ', group.groupHeading)
 
@@ -660,53 +660,29 @@ require([
 
                     //create layer toggle
                     //var button = $('<div align="left" style="cursor: pointer;padding:5px;"><span class="glyphspan glyphicon glyphicon-check"></span>&nbsp;&nbsp;' + layerName + '</div>');
-                    //image layer
-                    
+                    //recent/active layers
                     if ((layer.visible && wimOptions.moreinfo == undefined)) {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
                             '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
                             '<i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName +
-                            '<span id="info' + camelize(layerName) + '" onclick="openAboutModal()" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>' +
+                            '<span id="info' + camelize(layerName) + '"  title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>' +
                             '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
                             '</button>' +
                             '</div>');
+                    //image year
                     } else if ((!layer.visible && wimOptions.moreinfo == undefined)) {
                         var button = $(
                             '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
                             '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
                             '<i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName + ' Year' +
-                            '<span id="info' + camelize(layerName) + '" onclick="openAboutModal()" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>' +
+                            '<span id="info' + camelize(layerName) + '"  title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></span>' +
                             '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
-                            '</button>' +
-                            '</div>');
-                    //recent and active layer
-                    /*} else if (layer.visible && wimOptions.moreinfo == undefined) {
-                        var button = $(
-                            '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
-                            '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
-                            '<i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName + ' Projects' +
-                            '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
-                            '</button>' +
-                            '</div>');
-                    } else if ((!layer.visible && wimOptions.moreinfo == undefined)) {
-                        var button = $(
-                            '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
-                            '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
-                            '<i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName +
-                            '<span id="opacity' + camelize(layerName) + '" style="padding-right: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></span>' +
-                            '</button>' +
-                            '</div>');*/
-                    //check else
-                    } else {
-                        var button = $(
-                            '<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons">' +
-                            '<button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left">' +
-                            '<i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName +
                             '</button>' +
                             '</div>');
                     }
 
+                    
 
                     //click listener for regular
                     button.click(function (e) {
@@ -803,6 +779,14 @@ require([
                                 });
                             });
                         }
+                        
+                        //open 'About' modal without toggling layers
+                        $("#info"+camelize(layerName)).click(function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            $('#aboutModal').modal('show');
+                        });
+    
                     }
 
                     else {
@@ -831,6 +815,8 @@ require([
     
                     $("#legendDiv").niceScroll();
                 }
+
+                
 
             });//end of require statement containing legend building code
 
@@ -870,12 +856,6 @@ function showHideInnerProj(i) {
 
 }
 
-/*$('#openAbout').click(function() {
-    $('#aboutModal').modal('show');
-})*/
-function openAboutModal() {
-    $('#aboutModal').modal('show');
-}
 
 //set extent for 'Zoom to region' panel
 function zoomToFunction() {
