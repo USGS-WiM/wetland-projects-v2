@@ -785,8 +785,9 @@ require([
                             e.preventDefault();
                             e.stopPropagation();
                             $('#aboutModal').modal('show');
+                            $('#aboutTab').tab('show');
                         });
-    
+                        
                     }
 
                     else {
