@@ -3,8 +3,8 @@
     "name": "wetland-projects-v2",
     "organization": "U.S. Geological Survey",
     "description": "Documents best practices for software development within WIM",
-    "version": "v0.0.0",
-    "status": "Development",
+    "version": "v1.0.0",
+    "status": "Production",
 
     "permissions": {
       "usageType": "openSource",
@@ -16,7 +16,7 @@
       ]
     },
 
-    "homepageURL": "n/a",
+    "homepageURL": "https://www.fws.gov/wetlands/data/Mapper.html",
     "downloadURL": "https://github.com/USGS-WiM/wetland-projects-v2/archive/master.zip",
     "disclaimerURL": "https://github.com/USGS-WiM/wetland-projects-v2/blob/master/DISCLAIMER.md",
     "repositoryUrl": "https://github.com/USGS-WiM/wetland-projects-v2",
@@ -30,10 +30,7 @@
     ],
 
     "languages": [
-      "Markdown",
-      "javascript",
-      "html",
-      "css"
+      "javascript"
     ],
 
     "contact": {
@@ -42,7 +39,7 @@
     },
 
     "date": {
-      "metadataLastUpdated": "2017-10-27"
+      "metadataLastUpdated": "2018-4-18"
     }
   }
 ]
