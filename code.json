@@ -2,7 +2,7 @@
   {
     "name": "wetland-projects-v2",
     "organization": "U.S. Geological Survey",
-    "description": "Documents best practices for software development within WIM",
+    "description": "Fish and Wildlife Service Wetlands Projects Mapper",
     "version": "v1.0.0",
     "status": "Production",
 
@@ -25,12 +25,13 @@
     "laborHours": null,
 
     "tags": [
-      "wetlands",
-      "projects"
+      "interactive map",
+      "wetlands"
     ],
 
     "languages": [
-      "javascript"
+      "javascript",
+      "JQuery"
     ],
 
     "contact": {
@@ -39,7 +40,7 @@
     },
 
     "date": {
-      "metadataLastUpdated": "2018-4-18"
+      "metadataLastUpdated": "2019-4-22"
     }
   }
 ]
