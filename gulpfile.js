@@ -45,7 +45,7 @@ gulp.task('scripts', function () {
 });
 
 // HTML
-gulp.task('html', ['styles', 'scripts', 'icons'], function () {
+gulp.task('html', gulp.series(['styles', 'scripts', 'icons'], function () {
     var jsFilter = plugins.filter('**/*.js');
     var cssFilter = plugins.filter('**/*.css');
 
@@ -62,7 +62,7 @@ gulp.task('html', ['styles', 'scripts', 'icons'], function () {
         //.pipe(rename({ extname: '.min.js' }))
         .pipe(gulp.dest('build'))
         .pipe(plugins.size());
-});
+}));
 
 // Images
 gulp.task('images', function () {
@@ -83,14 +83,14 @@ gulp.task('clean', function (cb) {
 });
 
 // Build
-gulp.task('build', ['html', 'images']);
+gulp.task('build', gulp.series(['html', 'images']));
 
 // Default task
 //make sure download-esri-api (if needed) is run just after clean, but before build
 //gulp.task('default', ['clean', 'download-esri-api'], function () {
-gulp.task('default', ['clean'], function () {
+gulp.task('default', gulp.series(['clean'], function () {
     gulp.start('build');
-});
+}));
 
 // Connect
 gulp.task('connect', function () {
@@ -102,9 +102,9 @@ gulp.task('connect', function () {
 });
 
 // Open
-gulp.task('serve', ['connect'], function () {
+gulp.task('serve', gulp.series(['connect'], function () {
     open("http://localhost:9000");
-});
+}));
 
 // Inject Bower components
 gulp.task('wiredep', function () {
@@ -124,7 +124,7 @@ gulp.task('wiredep', function () {
 });
 
 // Watch
-gulp.task('watch', ['connect', 'serve'], function () {
+gulp.task('watch', gulp.series(['connect', 'serve'], function () {
     // Watch for changes in `src` folder
     gulp.watch([
         'src/*.html',
@@ -147,4 +147,4 @@ gulp.task('watch', ['connect', 'serve'], function () {
 
     // Watch bower files
     gulp.watch('bower.json', ['wiredep']);
-});
+}));
