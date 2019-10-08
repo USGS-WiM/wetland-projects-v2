@@ -501,16 +501,12 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 #geosearch{
-    display: -webkit-flex;
     display: flex;
-    -webkit-justify-content: center;
     justify-content: center;
 
 }
 .geosearch-form-buttons{
-    display: -webkit-flex;
     display: flex;
-    -webkit-justify-content: center;
     justify-content: center;
 }
 .geosearch-form-buttons button{
