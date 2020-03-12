@@ -22,7 +22,7 @@
     "gulp-useref": "^4.0.0",
     "gulp-util": "^3.0.8",
     "jshint": "^2.10.2",
-    "open": "0.0.5",
+    "open": "6.0.0",
     "wiredep": "^1.4.4"
   },
   "dependencies": {
