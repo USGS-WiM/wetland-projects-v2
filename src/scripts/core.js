@@ -88,10 +88,10 @@ require([
         //bring this line back after experiment////////////////////////////
         //allLayers = mapLayers;
 
-        esriConfig.defaults.io.corsEnabledServers.push("fwsmapper.wim.usgs.gov");
-        esri.config.defaults.io.proxyUrl = "https://fwsmapper.wim.usgs.gov/serviceProxy/proxy.ashx";
+        esriConfig.defaults.io.corsEnabledServers.push("fwsprimary.wim.usgs.gov");
+        esri.config.defaults.io.proxyUrl = "https://fwsprimary.wim.usgs.gov/serviceProxy/proxy.ashx";
 
-        esriConfig.defaults.geometryService = new GeometryService("https://fwsmapper.wim.usgs.gov/arcgis/rest/services/Utilities/Geometry/GeometryServer");
+        esriConfig.defaults.geometryService = new GeometryService("https://fwsprimary.wim.usgs.gov/server/rest/services/Utilities/Geometry/GeometryServer");
 
         //deleted commented out addProxyRules
 
