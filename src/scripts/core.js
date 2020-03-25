@@ -91,7 +91,7 @@ require([
         esriConfig.defaults.io.corsEnabledServers.push("fwsprimary.wim.usgs.gov");
         // esri.config.defaults.io.proxyUrl = "https://fwsprimary.wim.usgs.gov/arcgis-proxy/proxy.ashx";
         urlUtils.addProxyRule({
-            urlPrefix: "https://fwsprimary.wim.usgs.gov/server/rest/services/WetlandsProjects/WetlandsProjects/MapServer",
+            urlPrefix: "fwsprimary.wim.usgs.gov/server/rest/services/WetlandsProjects/",
             proxyUrl: "https://fwsprimary.wim.usgs.gov/arcgis-proxy/proxy.ashx"
         });
 
