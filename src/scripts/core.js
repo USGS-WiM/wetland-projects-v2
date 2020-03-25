@@ -89,10 +89,10 @@ require([
         //allLayers = mapLayers;
 
         esriConfig.defaults.io.corsEnabledServers.push("fwsprimary.wim.usgs.gov");
-        // esri.config.defaults.io.proxyUrl = "http://fwsprimary.wim.usgs.gov/arcgis-proxy/proxy.ashx";
+        // esri.config.defaults.io.proxyUrl = "https://fwsprimary.wim.usgs.gov/arcgis-proxy/proxy.ashx";
         urlUtils.addProxyRule({
             urlPrefix: "fwspublicservices.wim.usgs.gov/server/rest/services/WetlandsProjects/",
-            proxyUrl: "http://fwsprimary.wim.usgs.gov/arcgis-proxy/proxy.ashx"
+            proxyUrl: "https://fwsprimary.wim.usgs.gov/arcgis-proxy/proxy.ashx"
         });
 
         esriConfig.defaults.geometryService = new GeometryService("https://fwsprimary.wim.usgs.gov/server/rest/services/Utilities/Geometry/GeometryServer");
