@@ -23,7 +23,7 @@
     "gulp-util": "^3.0.8",
     "jshint": "^2.10.2",
     "open": "6.0.0",
-    "wiredep": "^1.4.4"
+    "wiredep": "^4.0.0"
   },
   "dependencies": {
     "bower": "^1.8.8"
